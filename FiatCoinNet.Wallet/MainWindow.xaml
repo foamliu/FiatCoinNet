@@ -1,0 +1,104 @@
+﻿<Window x:Class="FiatCoinNet.WalletGui.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FiatCoinNet.WalletGui"
+        mc:Ignorable="d"
+        Title="Wallet" Height="500" Width="800">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="E_xit" Name="miExit" Click="miExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Option">
+                <MenuItem Header="_Settings..." Name="miSettings" Click="miSettings_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About..." Name="miAbout" Click="miAbout_Click"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="16*"/>
+                <ColumnDefinition Width="8*"/>
+                <ColumnDefinition Width="493*"/>
+            </Grid.ColumnDefinitions>
+            <TabControl Grid.ColumnSpan="3">
+                <TabItem Header="Addresses" Margin="-2,0,2,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="194*" />
+                            <ColumnDefinition Width="194*" />
+                            <ColumnDefinition Width="109*" />
+                            <ColumnDefinition Width="84*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <Label >Issuer: </Label>
+                            <ComboBox Name ="comboBoxIssuer" VerticalAlignment="Center" Width="150"></ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <Label>Currency Code: </Label>
+                            <ComboBox Name ="comboBoxCurrencyCode" VerticalAlignment="Center" Width="150"></ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" Margin="30,0,0,0">
+                            <Button Click="miNewAddress_Click">New Address</Button>
+                        </StackPanel>
+                        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="4" Margin="0,10,0,0">
+                            <DataGrid Name="dataGridAddresses" ItemsSource="{Binding}" AutoGenerateColumns="False" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Width ="300*" Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width ="100*" Header ="Balance" Binding="{Binding Balance}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="200*" Header ="CurrencyCode" Binding="{Binding CurrencyCode}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                                <DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Delete" Click="miDelete_Click">
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </DataGrid.ContextMenu>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Pay">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Pay From: " TextAlignment="Right" Margin="10"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Width="300" Margin="10" Name="PayFrom"></ComboBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Pay To: " TextAlignment="Right" Margin="10"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="payTo"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Balance: " TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="balance"></TextBox>
+                        <Button Grid.Row="3" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click">Pay</Button>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Transactions" Margin="2,-2,-2,0">
+                    <Grid>
+                        <ScrollViewer>
+                            <DataGrid Name="dataGridTransactions" AutoGenerateColumns="True" >
+                            </DataGrid>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+
+            </TabControl>
+        </Grid>
+
+    </DockPanel>
+
+</Window>

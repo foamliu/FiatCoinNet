@@ -1,0 +1,29 @@
+{
+  "siteName": {
+    "value": "fiatcoinet"
+  },
+  "hostingPlanName": {
+    "value": "Default1"
+  },
+  "siteLocation": {
+    "value": "East Asia"
+  },
+  "sku": {
+    "value": "Free"
+  },
+  "workerSize": {
+    "value": "0"
+  },
+  "siteMode": {
+    "value": "Limited"
+  },
+  "computeMode": {
+    "value": "0"
+  },
+  "subscriptionId": {
+    "value": "9b333957-9b2a-4902-99c0-1e8a3a80873e"
+  },
+  "resourceGroup": {
+    "value": "Default-Web-EastAsia"
+  }
+}
