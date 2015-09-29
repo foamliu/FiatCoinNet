@@ -20,8 +20,8 @@ namespace FiatCoinNet.Stress
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Program));
 
-        //private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
-        private const string baseUrl = "http://localhost:48701/";
+        private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
+        //private const string baseUrl = "http://localhost:48701/";
 
         private const int NumberOfAccounts = 10000;
         private const int NumberOfTransactions = 1000000;

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace FiatCoinNetWeb.Controllers
 {
-    public class IssuerController : Controller
+    public class BankController : Controller
     {
-        // GET: Issuer
+        // GET: Bank
         public ActionResult Index()
         {
             return View();

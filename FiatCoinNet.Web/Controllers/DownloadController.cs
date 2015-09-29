@@ -6,10 +6,15 @@ using System.Web.Mvc;
 
 namespace FiatCoinNetWeb.Controllers
 {
-    public class IssuerController : Controller
+    public class DownloadController : Controller
     {
-        // GET: Issuer
+        // GET: Download
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Wallet()
         {
             return View();
         }

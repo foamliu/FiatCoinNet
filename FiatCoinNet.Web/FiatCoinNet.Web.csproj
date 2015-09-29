@@ -183,10 +183,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\FederationCertifierController.cs" />
+    <Compile Include="Controllers\BankApiController.cs" />
+    <Compile Include="Controllers\BankController.cs" />
+    <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IssuerApiController.cs" />
     <Compile Include="Controllers\IssuerController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -221,7 +223,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="ApplicationInsights.config" />
-    <None Include="Properties\PublishProfiles\fiatcoinet %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\fiatcoinet.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -247,6 +248,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Service References\Application Insights\ConnectedService.json" />
+    <Content Include="Views\Bank\Index.cshtml" />
+    <Content Include="Views\Issuer\Index.cshtml" />
+    <Content Include="Views\Download\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiatCoinNet.Common\FiatCoinNet.Common.csproj">
@@ -256,6 +260,10 @@
     <ProjectReference Include="..\FiatCoinNet.Domain\FiatCoinNet.Domain.csproj">
       <Project>{57ba3c91-7573-405d-9018-185b9b1f1b7c}</Project>
       <Name>FiatCoinNet.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiatCoinNet.Wallet\FiatCoinNet.WalletGui.csproj">
+      <Project>{2fe14312-4672-45f8-9eed-1ed91d5ad916}</Project>
+      <Name>FiatCoinNet.WalletGui</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -285,7 +293,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>48701</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
