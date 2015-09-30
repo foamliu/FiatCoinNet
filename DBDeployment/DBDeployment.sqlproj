@@ -69,4 +69,7 @@
     <Build Include="StoredProcedure\GetTransaction.sql" />
     <Build Include="StoredProcedure\AddTransaction.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="DBDeployment.publish.xml" />
+  </ItemGroup>
 </Project>
