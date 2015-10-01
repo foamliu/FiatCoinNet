@@ -6,5 +6,8 @@
     <DeployScriptFileName>DBDeployment.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=fiatcoindb.database.windows.net;Persist Security Info=True;User ID=sqladmin;Pooling=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
+    <ScriptDatabaseOptions>True</ScriptDatabaseOptions>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <CreateNewDatabase>True</CreateNewDatabase>
   </PropertyGroup>
 </Project>

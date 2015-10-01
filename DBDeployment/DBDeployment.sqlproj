@@ -71,6 +71,7 @@
     <Build Include="StoredProcedure\CloseAccount.sql" />
     <Build Include="StoredProcedure\GetAccounts.sql" />
     <Build Include="StoredProcedure\GetTransactions.sql" />
+    <Build Include="StoredProcedure\Cleanup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DBDeployment.publish.xml" />

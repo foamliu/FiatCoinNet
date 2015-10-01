@@ -22,6 +22,9 @@ namespace FiatCoinNet.Domain
 
         [DataMember]
         public string Dest { get; set; }
+
+        [DataMember]
+        public int IssuerId { get; set; }
         #endregion
 
         #region Optional Fields

@@ -24,6 +24,12 @@ namespace FiatCoinNet.Common.Tests
             BaseAddress = new Uri(baseUrl),
         };
 
+        [TestInitialize]
+        public void Setup()
+        {
+            DataAccessor.Testability.Cleanup();
+        }
+
         [TestMethod()]
         public void CertifierControllerTest()
         {
@@ -95,6 +101,7 @@ namespace FiatCoinNet.Common.Tests
             {
                 PaymentTransaction = new PaymentTransaction
                 {
+                    IssuerId = issuerId,
                     Source = FiatCoinHelper.EncodeIssuerId(issuerId),
                     Dest = address,
                     Amount = 100.00m,
@@ -129,6 +136,7 @@ namespace FiatCoinNet.Common.Tests
             {
                 PaymentTransaction = new PaymentTransaction
                 {
+                     IssuerId = issuerId,
                      Source = address,
                      Dest = address2,
                      Amount = 10.00m,

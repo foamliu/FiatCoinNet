@@ -47,20 +47,6 @@ namespace FiatCoinNetWeb.Controllers
         }
 
         /// <summary>
-        /// Get transactions - DEBUG ONLY
-        /// </summary>
-        /// <param name="issuerId"></param>
-        /// <returns></returns>
-        //[HttpGet]
-        //[Route("issuer/api/{issuerId}/transactions")]
-        //public HttpResponseMessage GetTransactions([FromUri]int issuerId)
-        //{
-        //    this.Validate(issuerId);
-
-        //    return Request.CreateResponse(HttpStatusCode.OK, s_PaymentTransactions[issuerId]);
-        //}
-
-        /// <summary>
         /// Get Registered Accounts
         /// </summary>
         /// <param name="issuerId"></param>
@@ -71,8 +57,8 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
-            var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.Address);
+            var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(issuerId, request.Address);
+            var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(issuerId, request.Address);
             account.Balance = FiatCoinHelper.CalculateBalance(transactions, request.Address);
             return Request.CreateResponse(HttpStatusCode.OK, account);
         }
@@ -122,6 +108,7 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
+            request.PaymentTransaction.IssuerId = issuerId;
             int srcIssuerId = FiatCoinHelper.GetIssuerId(request.PaymentTransaction.Source);
             int dstIssuerId = FiatCoinHelper.GetIssuerId(request.PaymentTransaction.Dest);
 
@@ -150,6 +137,7 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
+            request.PaymentTransaction.IssuerId = issuerId;
             DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
 
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -167,6 +155,7 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
+            request.PaymentTransaction.IssuerId = issuerId;
             DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -174,16 +163,11 @@ namespace FiatCoinNetWeb.Controllers
         #region Private Methods
         private void Validate(int issuerId, BaseRequest baseReq = null)
         {
-            //if (!s_PaymentAccounts.ContainsKey(issuerId))
-            //{
-            //    var message = string.Format("Issuer with id = {0} not found", issuerId);
-            //    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
-            //}
-
             if (baseReq is GetAccountRequest)
             {
                 var request = (GetAccountRequest)baseReq;
-                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
+                int isserId = FiatCoinHelper.GetIssuerId(request.Address);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(isserId, request.Address);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.Address);
@@ -197,7 +181,8 @@ namespace FiatCoinNetWeb.Controllers
             else if (baseReq is UnregisterRequest)
             {
                 var request = (UnregisterRequest)baseReq;
-                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
+                int isserId = FiatCoinHelper.GetIssuerId(request.Address);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(isserId, request.Address);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.Address);
@@ -214,7 +199,7 @@ namespace FiatCoinNetWeb.Controllers
                     var message = string.Format("Source's issuer Id = {0}, but the request was sent to issuer Id = {1}", srcIsserId, issuerId);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, message));
                 }
-                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.PaymentTransaction.Source);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(srcIsserId, request.PaymentTransaction.Source);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.PaymentTransaction.Source);
@@ -222,7 +207,7 @@ namespace FiatCoinNetWeb.Controllers
                 }
                 ValidateRequestor(request, account);
 
-                var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.PaymentTransaction.Source);
+                var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(srcIsserId, request.PaymentTransaction.Source);
                 var balance = FiatCoinHelper.CalculateBalance(transactions, request.PaymentTransaction.Source);
 
                 if (request.PaymentTransaction.Amount > balance)
@@ -234,7 +219,8 @@ namespace FiatCoinNetWeb.Controllers
             else if (baseReq is FundRequest)
             {
                 var request = (FundRequest)baseReq;
-                var account = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.PaymentTransaction.Dest);
+                int destIsserId = FiatCoinHelper.GetIssuerId(request.PaymentTransaction.Dest);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(destIsserId, request.PaymentTransaction.Dest);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.PaymentTransaction.Dest);

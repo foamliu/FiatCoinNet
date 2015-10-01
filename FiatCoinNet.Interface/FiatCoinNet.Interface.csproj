@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IFiatCoinRepository.cs" />
+    <Compile Include="ITestability.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiatCoinNet.Domain\FiatCoinNet.Domain.csproj">

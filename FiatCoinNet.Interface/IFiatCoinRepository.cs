@@ -11,7 +11,7 @@ namespace FiatCoinNet.Interface
     {
         PaymentAccount AddAccount(PaymentAccount newAccount);
 
-        PaymentAccount GetAccount(string address);
+        PaymentAccount GetAccount(int issuerId, string address);
 
         List<PaymentAccount> GetAccounts(int issuerId);
 
@@ -19,6 +19,6 @@ namespace FiatCoinNet.Interface
 
         PaymentTransaction AddTransaction(PaymentTransaction newTransaction);
 
-        List<PaymentTransaction> GetTransactions(string address);
+        List<PaymentTransaction> GetTransactions(int issuerId, string address);
     }
 }

@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace FiatCoinNetWeb.DataAccess
 {
-    public partial class DataAccessor : IFiatCoinRepository
+    public partial class DataAccessor : 
+        IFiatCoinRepository
     {
         public PaymentAccount AddAccount(PaymentAccount newAccount)
         {
@@ -32,6 +33,7 @@ namespace FiatCoinNetWeb.DataAccess
         {
             var result = QueryStoreProcedure("AddTransaction", new Dictionary<string, object>
                                                           {
+                                                              {"@issuerId", newTransaction.IssuerId},
                                                               {"@source", newTransaction.Source},
                                                               {"@dest", newTransaction.Dest},
                                                               {"@amount", newTransaction.Amount},
@@ -54,10 +56,11 @@ namespace FiatCoinNetWeb.DataAccess
                                                           });
         }
 
-        public PaymentAccount GetAccount(string address)
+        public PaymentAccount GetAccount(int issuerId, string address)
         {
             var result = QueryStoreProcedure("GetAccount", new Dictionary<string, object>
                                                           {
+                                                              {"@issuerId", issuerId},
                                                               {"@address", address},
                                                           });
             if (result.Tables[0].Rows.Count > 0)
@@ -86,12 +89,13 @@ namespace FiatCoinNetWeb.DataAccess
             return list;
         }
 
-        public List<PaymentTransaction> GetTransactions(string address)
+        public List<PaymentTransaction> GetTransactions(int issuerId, string address)
         {
             var list = new List<PaymentTransaction>();
 
             var result = QueryStoreProcedure("GetTransactions", new Dictionary<string, object>
                                                           {
+                                                              {"@issuerId", issuerId},
                                                               {"@address", address},
                                                           });
             if (result.Tables[0].Rows.Count > 0)

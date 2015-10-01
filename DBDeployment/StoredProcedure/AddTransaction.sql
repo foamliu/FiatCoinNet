@@ -1,4 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[AddTransaction]
+    @issuerId INT,
     @source VARCHAR(1024),
     @dest VARCHAR(1024),
     @amount MONEY,
@@ -11,10 +12,11 @@ BEGIN
 
     INSERT INTO [dbo].[PaymentTransaction]
     (
-        [Source], [Dest], [Amount], [CurrencyCode], [MemoData], [InsertedDatetime], [InsertedBy]
+        [IssuerId], [Source], [Dest], [Amount], [CurrencyCode], [MemoData], [InsertedDatetime], [InsertedBy]
     )
     VALUES
     (
+        @issuerId,
         @source,
         @dest,
         @amount,
@@ -25,7 +27,8 @@ BEGIN
     )
 
     SELECT * FROM [dbo].[PaymentTransaction]
-    WHERE [Source] = @source
+    WHERE [IssuerId] = @issuerId
+        AND [Source] = @source
         AND [Dest] = @dest
         AND [InsertedDatetime] = @dt_now
 

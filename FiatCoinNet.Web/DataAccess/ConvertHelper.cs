@@ -21,6 +21,7 @@ namespace FiatCoinNetWeb.DataAccess
 
         public static PaymentTransaction FromRow(this PaymentTransaction trx, DataRow row)
         {
+            trx.IssuerId = row.GetIntField("IssuerId");
             trx.Source = row.GetStringField("Source");
             trx.Dest = row.GetStringField("Dest");
             trx.Amount = row.GetDecimalField("Amount");

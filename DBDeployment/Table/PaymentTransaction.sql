@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[PaymentTransaction]
 (
+    [IssuerId] INT NOT NULL,
     [Source] VARCHAR(1024) NOT NULL,
     [Dest] VARCHAR(1024) NOT NULL,
     [Amount] MONEY NOT NULL,
@@ -7,5 +8,5 @@
     [MemoData] NVARCHAR(MAX),
     [InsertedDatetime] DATETIME NOT NULL,
     [InsertedBy] NVARCHAR(64) NOT NULL,
-    PRIMARY KEY ([Source], [Dest], [InsertedDatetime])
+    PRIMARY KEY ([IssuerId], [Source], [Dest], [InsertedDatetime])
 )
