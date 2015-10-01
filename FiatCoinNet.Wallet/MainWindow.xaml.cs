@@ -45,6 +45,7 @@ namespace FiatCoinNet.WalletGui
             var account = new PaymentAccount
             {
                 Address = FiatCoinHelper.ToAddress(issuerId, fingerPrint),
+                IssuerId = issuerId,
                 CurrencyCode = currencyCode,
                 Balance = 0.00m,
                 PublicKey = publicKey,

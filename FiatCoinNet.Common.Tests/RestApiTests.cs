@@ -59,6 +59,7 @@ namespace FiatCoinNet.Common.Tests
             var account = new PaymentAccount
             {
                 Address = address,
+                IssuerId = sourceIssuerId,
                 CurrencyCode = "USD",
                 PublicKey = publicKey,
                 PrivateKey = privateKey
@@ -71,6 +72,7 @@ namespace FiatCoinNet.Common.Tests
             var account2 = new PaymentAccount
             {
                 Address = address2,
+                IssuerId = destIssuerId,
                 CurrencyCode = "USD",
                 PublicKey = publicKey,
                 PrivateKey = privateKey

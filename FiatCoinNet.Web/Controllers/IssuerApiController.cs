@@ -18,20 +18,14 @@ namespace FiatCoinNetWeb.Controllers
     public class IssuerApiController : ApiController
     {
         // TODO: persistence
-        private static readonly ConcurrentDictionary<int, List<PaymentAccount>> s_PaymentAccounts;
-        private static readonly ConcurrentDictionary<int, List<PaymentTransaction>> s_PaymentTransactions;
         private static readonly ConcurrentDictionary<int, List<LowerLevelBlock>> s_Blocks;
 
         static IssuerApiController()
         {
-            s_PaymentAccounts = new ConcurrentDictionary<int, List<PaymentAccount>>();
-            s_PaymentTransactions = new ConcurrentDictionary<int, List<PaymentTransaction>>();
             s_Blocks = new ConcurrentDictionary<int, List<LowerLevelBlock>>();
 
             BankApiController.CertifiedIssuers.ForEach(i =>
             {
-                s_PaymentAccounts[i.Id] = new List<PaymentAccount>();
-                s_PaymentTransactions[i.Id] = new List<PaymentTransaction>();
                 s_Blocks[i.Id] = new List<LowerLevelBlock>();
             });
         }
@@ -48,7 +42,8 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId);
 
-            return Request.CreateResponse(HttpStatusCode.OK, s_PaymentAccounts[issuerId]);
+            var list = DataAccess.DataAccessor.FiatCoinRepository.GetAccounts(issuerId);
+            return Request.CreateResponse(HttpStatusCode.OK, list);
         }
 
         /// <summary>
@@ -56,14 +51,14 @@ namespace FiatCoinNetWeb.Controllers
         /// </summary>
         /// <param name="issuerId"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Route("issuer/api/{issuerId}/transactions")]
-        public HttpResponseMessage GetTransactions([FromUri]int issuerId)
-        {
-            this.Validate(issuerId);
+        //[HttpGet]
+        //[Route("issuer/api/{issuerId}/transactions")]
+        //public HttpResponseMessage GetTransactions([FromUri]int issuerId)
+        //{
+        //    this.Validate(issuerId);
 
-            return Request.CreateResponse(HttpStatusCode.OK, s_PaymentTransactions[issuerId]);
-        }
+        //    return Request.CreateResponse(HttpStatusCode.OK, s_PaymentTransactions[issuerId]);
+        //}
 
         /// <summary>
         /// Get Registered Accounts
@@ -76,8 +71,9 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            var account = s_PaymentAccounts[issuerId].FirstOrDefault(a => a.Address == request.Address);
-            account.Balance = FiatCoinHelper.CalculateBalance(s_PaymentTransactions[issuerId], request.Address);
+            var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
+            var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.Address);
+            account.Balance = FiatCoinHelper.CalculateBalance(transactions, request.Address);
             return Request.CreateResponse(HttpStatusCode.OK, account);
         }
 
@@ -93,7 +89,6 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            //s_PaymentAccounts[issuerId].Add(request.PaymentAccount);
             request.PaymentAccount.IssuerId = issuerId;
             DataAccess.DataAccessor.FiatCoinRepository.AddAccount(request.PaymentAccount);
             return Request.CreateResponse(HttpStatusCode.OK);
@@ -111,8 +106,7 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            var account = s_PaymentAccounts[issuerId].FirstOrDefault(acct => acct.Address == request.Address);
-            s_PaymentAccounts[issuerId].Remove(account);
+            DataAccess.DataAccessor.FiatCoinRepository.CloseAccount(request.Address);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -145,7 +139,8 @@ namespace FiatCoinNetWeb.Controllers
                 HttpResponseMessage response = RestApiHelper.HttpClient.PostAsync(requestUri, content).Result;
                 response.EnsureSuccessStatusCode();
             }
-            s_PaymentTransactions[issuerId].Add(request.PaymentTransaction);
+            DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -155,7 +150,7 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            s_PaymentTransactions[issuerId].Add(request.PaymentTransaction);
+            DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -172,23 +167,23 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            s_PaymentTransactions[issuerId].Add(request.PaymentTransaction);
+            DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         #region Private Methods
         private void Validate(int issuerId, BaseRequest baseReq = null)
         {
-            if (!s_PaymentAccounts.ContainsKey(issuerId))
-            {
-                var message = string.Format("Issuer with id = {0} not found", issuerId);
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
-            }
+            //if (!s_PaymentAccounts.ContainsKey(issuerId))
+            //{
+            //    var message = string.Format("Issuer with id = {0} not found", issuerId);
+            //    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+            //}
 
             if (baseReq is GetAccountRequest)
             {
                 var request = (GetAccountRequest)baseReq;
-                var account = s_PaymentAccounts[issuerId].FirstOrDefault(a => a.Address == request.Address);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.Address);
@@ -202,7 +197,7 @@ namespace FiatCoinNetWeb.Controllers
             else if (baseReq is UnregisterRequest)
             {
                 var request = (UnregisterRequest)baseReq;
-                var account = s_PaymentAccounts[issuerId].FirstOrDefault(acct => acct.Address == request.Address);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.Address);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.Address);
@@ -219,7 +214,7 @@ namespace FiatCoinNetWeb.Controllers
                     var message = string.Format("Source's issuer Id = {0}, but the request was sent to issuer Id = {1}", srcIsserId, issuerId);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, message));
                 }
-                var account = s_PaymentAccounts[issuerId].FirstOrDefault(acct => acct.Address == request.PaymentTransaction.Source);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(request.PaymentTransaction.Source);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.PaymentTransaction.Source);
@@ -227,7 +222,8 @@ namespace FiatCoinNetWeb.Controllers
                 }
                 ValidateRequestor(request, account);
 
-                var balance = FiatCoinHelper.CalculateBalance(s_PaymentTransactions[issuerId], request.PaymentTransaction.Source);
+                var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.PaymentTransaction.Source);
+                var balance = FiatCoinHelper.CalculateBalance(transactions, request.PaymentTransaction.Source);
 
                 if (request.PaymentTransaction.Amount > balance)
                 {
@@ -238,7 +234,7 @@ namespace FiatCoinNetWeb.Controllers
             else if (baseReq is FundRequest)
             {
                 var request = (FundRequest)baseReq;
-                var account = s_PaymentAccounts[issuerId].FirstOrDefault(acct => acct.Address == request.PaymentTransaction.Dest);
+                var account = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(request.PaymentTransaction.Dest);
                 if (account == null)
                 {
                     var message = string.Format("Account with address = {0} not found", request.PaymentTransaction.Dest);
