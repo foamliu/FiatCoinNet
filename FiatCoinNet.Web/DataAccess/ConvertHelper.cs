@@ -12,20 +12,20 @@ namespace FiatCoinNetWeb.DataAccess
     {
         public static PaymentAccount FromRow(this PaymentAccount acct, DataRow row)
         {
-            acct.Address = row.GetStringField("[Address]");
-            acct.IssuerId = row.GetIntField("[IssuerId]");
-            acct.CurrencyCode = row.GetStringField("[CurrencyCode]");
-            acct.PublicKey = row.GetStringField("[PublicKey]");
+            acct.Address = row.GetStringField("Address");
+            acct.IssuerId = row.GetIntField("IssuerId");
+            acct.CurrencyCode = row.GetStringField("CurrencyCode");
+            acct.PublicKey = row.GetStringField("PublicKey");
             return acct;
         }
 
         public static PaymentTransaction FromRow(this PaymentTransaction trx, DataRow row)
         {
-            trx.Source = row.GetStringField("[Source]");
-            trx.Dest = row.GetStringField("[Dest]");
-            trx.Amount = row.GetDecimalField("[Amount]");
-            trx.CurrencyCode = row.GetStringField("[CurrencyCode]");
-            trx.MemoData = row.GetStringField("[MemoData]");
+            trx.Source = row.GetStringField("Source");
+            trx.Dest = row.GetStringField("Dest");
+            trx.Amount = row.GetDecimalField("Amount");
+            trx.CurrencyCode = row.GetStringField("CurrencyCode");
+            trx.MemoData = row.GetStringField("MemoData");
             return trx;
         }
 
