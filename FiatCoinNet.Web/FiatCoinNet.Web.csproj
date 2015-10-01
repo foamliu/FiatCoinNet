@@ -189,6 +189,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssuerApiController.cs" />
     <Compile Include="Controllers\IssuerController.cs" />
+    <Compile Include="DataAccess\ConvertHelper.cs" />
+    <Compile Include="DataAccess\DataAccessor.cs" />
+    <Compile Include="DataAccess\Implementation.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -260,6 +263,10 @@
     <ProjectReference Include="..\FiatCoinNet.Domain\FiatCoinNet.Domain.csproj">
       <Project>{57ba3c91-7573-405d-9018-185b9b1f1b7c}</Project>
       <Name>FiatCoinNet.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiatCoinNet.Interface\FiatCoinNet.Interface.csproj">
+      <Project>{ab36805d-a694-420c-a35c-b24eafb66918}</Project>
+      <Name>FiatCoinNet.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\FiatCoinNet.Wallet\FiatCoinNet.WalletGui.csproj">
       <Project>{2fe14312-4672-45f8-9eed-1ed91d5ad916}</Project>

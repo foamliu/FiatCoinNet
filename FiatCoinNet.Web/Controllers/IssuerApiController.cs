@@ -93,7 +93,9 @@ namespace FiatCoinNetWeb.Controllers
         {
             this.Validate(issuerId, request);
 
-            s_PaymentAccounts[issuerId].Add(request.PaymentAccount);
+            //s_PaymentAccounts[issuerId].Add(request.PaymentAccount);
+            request.PaymentAccount.IssuerId = issuerId;
+            DataAccess.DataAccessor.FiatCoinRepository.AddAccount(request.PaymentAccount);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

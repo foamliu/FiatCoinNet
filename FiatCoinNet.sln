@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiatCoinNet.Stress", "FiatC
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DBDeployment", "DBDeployment\DBDeployment.sqlproj", "{4647BF75-CB13-49BB-BDA0-D51A0946811C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiatCoinNet.Interface", "FiatCoinNet.Interface\FiatCoinNet.Interface.csproj", "{AB36805D-A694-420C-A35C-B24EAFB66918}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -156,6 +158,22 @@ Global
 		{4647BF75-CB13-49BB-BDA0-D51A0946811C}.Release|x86.ActiveCfg = Release|Any CPU
 		{4647BF75-CB13-49BB-BDA0-D51A0946811C}.Release|x86.Build.0 = Release|Any CPU
 		{4647BF75-CB13-49BB-BDA0-D51A0946811C}.Release|x86.Deploy.0 = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|ARM.Build.0 = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|x64.Build.0 = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Debug|x86.Build.0 = Debug|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|ARM.ActiveCfg = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|ARM.Build.0 = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|x64.ActiveCfg = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|x64.Build.0 = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|x86.ActiveCfg = Release|Any CPU
+		{AB36805D-A694-420C-A35C-B24EAFB66918}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

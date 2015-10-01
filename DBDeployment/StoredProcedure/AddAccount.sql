@@ -1,6 +1,29 @@
 ﻿CREATE PROCEDURE [dbo].[AddAccount]
-	@param1 int = 0,
-	@param2 int
+    @address VARCHAR(1024),
+    @issuerId INT,
+    @currencyCode CHAR(3),
+    @publicKey VARCHAR(MAX)
 AS
-	SELECT @param1, @param2
-RETURN 0
+BEGIN
+
+    DECLARE @dt_now DATETIME = GETUTCDATE()
+    DECLARE @vc_inserted_by VARCHAR(128) = SUSER_SNAME()
+
+    INSERT INTO [dbo].[PaymentAccount]
+    (
+        [Address], [IssuerId], [CurrencyCode], [PublicKey], [InsertedDatetime], [InsertedBy]
+    )
+    VALUES
+    (
+        @address,
+        @issuerId,
+        @currencyCode,
+        @publicKey,
+        @dt_now,
+        @vc_inserted_by
+    )
+    
+    SELECT * FROM [dbo].[PaymentAccount]
+    WHERE @address = [Address]
+
+END

@@ -18,6 +18,12 @@ namespace FiatCoinNet.Domain
         public string Address { get; set; }
 
         /// <summary>
+        /// An issuer ID (like BIN)
+        /// </summary>
+        [DataMember]
+        public int IssuerId { get; set; }
+        
+        /// <summary>
         /// Balance
         /// </summary>
         [DataMember]

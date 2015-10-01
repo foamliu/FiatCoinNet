@@ -1,6 +1,32 @@
 ﻿CREATE PROCEDURE [dbo].[AddTransaction]
-	@param1 int = 0,
-	@param2 int
+    @source VARCHAR(1024),
+    @dest VARCHAR(1024),
+    @amount MONEY,
+    @currencyCode CHAR(3),
+    @memoData NVARCHAR(MAX)
 AS
-	SELECT @param1, @param2
-RETURN 0
+BEGIN
+    DECLARE @dt_now DATETIME = GETUTCDATE()
+    DECLARE @vc_inserted_by VARCHAR(128) = SUSER_SNAME()
+
+    INSERT INTO [dbo].[PaymentTransaction]
+    (
+        [Source], [Dest], [Amount], [CurrencyCode], [MemoData], [InsertedDatetime], [InsertedBy]
+    )
+    VALUES
+    (
+        @source,
+        @dest,
+        @amount,
+        @currencyCode,
+        @memoData,
+        @dt_now,
+        @vc_inserted_by
+    )
+
+    SELECT * FROM [dbo].[PaymentTransaction]
+    WHERE [Source] = @source
+        AND [Dest] = @dest
+        AND [InsertedDatetime] = @dt_now
+
+END
