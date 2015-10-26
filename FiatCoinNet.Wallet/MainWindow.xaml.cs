@@ -64,7 +64,7 @@ namespace FiatCoinNet.WalletGui
             {
                 Address = FiatCoinHelper.ToAddress(issuerId, fingerPrint),
                 CurrencyCode = currencyCode,
-                Balance = 15.00m,
+                Balance = 10.00m,
                 PublicKey = publicKey,
                 PrivateKey = null
             };
