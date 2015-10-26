@@ -11,7 +11,7 @@ namespace FiatCoinNet.Stress
 {
     public class Stress
     {
-        public const int Clients = 40;
+        public const int Clients = 32;
         public const int DurationMinute = 8 * 60;
 
         ///------------------------------------------------------------------------------
