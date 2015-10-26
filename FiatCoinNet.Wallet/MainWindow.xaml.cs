@@ -4,13 +4,23 @@ using FiatCoinNet.Domain.Requests;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace FiatCoinNet.WalletGui
 {
+    public enum TransactionType
+    {
+        All = 0,
+
+        Sent = 1,
+
+        Received = 2
+    }
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -20,6 +30,9 @@ namespace FiatCoinNet.WalletGui
 
         private Wallet m_Wallet;
 
+        private List<PaymentTransaction> m_Transactions = new List<PaymentTransaction>();
+
+        //private const string baseUrl = "http://localhost:48701/"; 
         private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
         public static readonly HttpClient HttpClient = new HttpClient
         {
@@ -28,9 +41,13 @@ namespace FiatCoinNet.WalletGui
 
         public MainWindow()
         {
-            InitializeComponent();      
-            Load();
+            InitializeComponent();
+            LoadAddresses();
+            BindCompanyNameAndCurrencyCode();
+            BindAddressForPay();
+            BindTransactionType();
         }
+
 
         private void miNewAddress_Click(object sender, RoutedEventArgs e)
         {
@@ -45,11 +62,10 @@ namespace FiatCoinNet.WalletGui
             var account = new PaymentAccount
             {
                 Address = FiatCoinHelper.ToAddress(issuerId, fingerPrint),
-                IssuerId = issuerId,
                 CurrencyCode = currencyCode,
-                Balance = 0.00m,
+                Balance = 10.00m,
                 PublicKey = publicKey,
-                PrivateKey = privateKey
+                PrivateKey = null
             };
 
             // register
@@ -63,9 +79,10 @@ namespace FiatCoinNet.WalletGui
             HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
             response.EnsureSuccessStatusCode();
 
+            account.PrivateKey = privateKey;
             this.m_Wallet.PaymentAccounts.Add(account);
 
-            this.UpdateDataGrid();
+            this.UpdateAddressDataGrid();
             this.Save();
         }
 
@@ -86,7 +103,7 @@ namespace FiatCoinNet.WalletGui
 
             // unregister this account
             int issuerId = 1942;
-            string requestUri = string.Format("issuer/api/{0}/accounts/unregister", issuerId); 
+            string requestUri = string.Format("issuer/api/{0}/accounts/unregister", issuerId);
             var unregisterRequest = new UnregisterRequest
             {
                 Address = toDeleteFromBindedList.Address
@@ -99,8 +116,61 @@ namespace FiatCoinNet.WalletGui
 
             m_Wallet.PaymentAccounts.Remove(toDeleteFromBindedList);
 
-            this.UpdateDataGrid();
+            this.UpdateAddressDataGrid();
             this.Save();
+        }
+
+        public void miTabControl_SelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.Source is TabControl)
+            {
+                string tabItem = ((TabItem)TabControls.SelectedItem).Header as string;
+                switch (tabItem)
+                {
+                    case "Addresses":
+                        GetBalances();
+                        this.UpdateAddressDataGrid();
+                        comboBoxIssuer.SelectedIndex = 0;
+                        comboBoxCurrencyCode.SelectedValue = "USD";
+                        break;
+                    case "Pay":
+                        payFrom.Items.Refresh();
+                        payFrom.SelectedValue = m_Wallet.PaymentAccounts.Count > 0 ? m_Wallet.PaymentAccounts[0].Address : null;
+                        break;
+                    case "Transactions":
+                        comboBoxTransactionType.SelectedIndex = 0;
+                        this.UpdateTransactionDataGrid();
+                        break;
+                }
+            }
+        }
+
+        private void PayFromSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.Source is ComboBox)
+            {
+                int index = payFrom.SelectedIndex;
+                payCurrencyCode.Text = m_Wallet.PaymentAccounts[index].CurrencyCode;
+            }
+        }
+
+        private void TransactionTypeSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.Source is ComboBox)
+            {
+                string value = comboBoxTransactionType.SelectedValue.ToString();
+                switch (value)
+                {
+                    case "All":
+                        m_Transactions = GetAllTransactions();
+                        break;
+                    case "Sent":
+                        break;
+                    case "Received":
+                        break;
+                }
+                this.UpdateTransactionDataGrid();
+            }
         }
 
         private void miExit_Click(object sender, RoutedEventArgs e)
@@ -117,10 +187,29 @@ namespace FiatCoinNet.WalletGui
         {
 
         }
-        
+
         private void btnPay_Click(object sender, RoutedEventArgs e)
         {
-            //Nina:Todo
+            int issuerId = FiatCoinHelper.GetIssuerId(payFrom.SelectedValue.ToString());
+            string requestUri = string.Format("issuer/api/{0}/accounts/pay", issuerId);
+            var payRequest = new DirectPayRequest
+            {
+                PaymentTransaction = new PaymentTransaction
+                {
+                    Source = payFrom.SelectedValue.ToString(),
+                    Dest = payTo.Text,
+                    Amount = Convert.ToDecimal(payAmount.Text),
+                    CurrencyCode = payCurrencyCode.Text,
+                    MemoData = "surface"
+                }
+            };
+            payRequest.Signature = CryptoHelper.Sign(m_Wallet.PaymentAccounts[payFrom.SelectedIndex].PrivateKey, payRequest.ToMessage());
+            HttpContent content = new StringContent(JsonHelper.Serialize(payRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            TabControls.SelectedIndex = 2;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -130,7 +219,7 @@ namespace FiatCoinNet.WalletGui
             base.OnClosing(e);
         }
 
-        private void UpdateDataGrid()
+        private void UpdateAddressDataGrid()
         {
             if (null == m_Wallet || null == m_Wallet.PaymentAccounts) return;
             try
@@ -142,10 +231,23 @@ namespace FiatCoinNet.WalletGui
             {
                 File.WriteAllText("error.log", ex.ToString());
             }
-
         }
 
-        private void LoadComboBox()
+        private void UpdateTransactionDataGrid()
+        {
+            if (null == m_Wallet || null == m_Transactions) return;
+            try
+            {
+                dataGridTransactions.ItemsSource = m_Transactions;
+                dataGridTransactions.Items.Refresh();
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText("error.log", ex.ToString());
+            }
+        }
+
+        private void BindCompanyNameAndCurrencyCode()
         {
             //load issuer combo box
             string requestUri = "certifier/api/issuers";
@@ -155,31 +257,86 @@ namespace FiatCoinNet.WalletGui
             comboBoxIssuer.ItemsSource = issuers;
             comboBoxIssuer.SelectedValuePath = "Id";
             comboBoxIssuer.DisplayMemberPath = "Name";
-            comboBoxIssuer.SelectedValue = issuers[0].Id;
 
             //load currency code combo box
             List<string> currencyCodes = DataAccessor.GetCurrencyCodes();
             comboBoxCurrencyCode.ItemsSource = currencyCodes;
-            comboBoxCurrencyCode.SelectedValue = "USD";
         }
 
-        private void Load()
+        private void BindAddressForPay()
+        {
+            payFrom.ItemsSource = m_Wallet.PaymentAccounts;
+            payFrom.SelectedValuePath = "Address";
+            payFrom.DisplayMemberPath = "Address";
+            if (m_Wallet.PaymentAccounts.Count > 0)
+            {
+                payCurrencyCode.Text = m_Wallet.PaymentAccounts[0].CurrencyCode;
+
+            }
+        }
+
+        private void BindTransactionType()
+        {
+            comboBoxTransactionType.ItemsSource = Enum.GetNames(typeof(TransactionType)).ToList();
+        }
+
+        private void LoadAddresses()
         {
             if (File.Exists(FileName))
             {
                 this.m_Wallet = JsonHelper.Deserialize<Wallet>(File.ReadAllText(FileName));
+                GetBalances();
             }
             else
             {
                 this.m_Wallet = new Wallet();
             }
-            this.UpdateDataGrid();
-            this.LoadComboBox();
+            UpdateAddressDataGrid();
+        }
+
+        private void GetBalances()
+        {
+            foreach (var paymentAccount in m_Wallet.PaymentAccounts)
+            {
+                int issuerId = FiatCoinHelper.GetIssuerId(paymentAccount.Address);
+                string requestUri = string.Format("issuer/api/{0}/accounts/get", issuerId);
+                var getRequest = new GetAccountRequest
+                {
+                    Address = paymentAccount.Address
+                };
+                HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+                response.EnsureSuccessStatusCode();
+                paymentAccount.Balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
+            }
         }
 
         private void Save()
         {
             File.WriteAllText(FileName, JsonHelper.Serialize(m_Wallet));
+        }
+
+        private List<PaymentTransaction> GetAllTransactions()
+        {
+            List<PaymentTransaction> result = new List<PaymentTransaction>();
+            foreach (var paymentAccount in m_Wallet.PaymentAccounts)
+            {
+                string requestUri = "issuer/api/transactions/get";
+                var getRequest = new GetAccountRequest
+                {
+                    Address = paymentAccount.Address
+                };
+                HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    List<PaymentTransaction> transactions = response.Content.ReadAsAsync<List<PaymentTransaction>>().Result;
+                    result.AddRange(transactions);
+                }
+            }
+            return result;
         }
     }
 }

@@ -5,17 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FiatCoinNet.WalletGui"
         mc:Ignorable="d"
-        Title="Wallet" Height="500" Width="800">
+        Title="{DynamicResource WINDOW_TITLE}" Height="500" Width="800">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="E_xit" Name="miExit" Click="miExit_Click"/>
+            <MenuItem Header="{DynamicResource MENU_FILE}">
+                <MenuItem Header="{DynamicResource MENUITEM_EXIT}" Name="miExit" Click="miExit_Click"/>
             </MenuItem>
-            <MenuItem Header="_Option">
-                <MenuItem Header="_Settings..." Name="miSettings" Click="miSettings_Click"/>
+            <MenuItem Header="{DynamicResource MENU_OPERATION}">
+                <MenuItem Header="{DynamicResource MENUITEM_SETTING}" Name="miSettings" Click="miSettings_Click"/>
             </MenuItem>
-            <MenuItem Header="_Help">
-                <MenuItem Header="_About..." Name="miAbout" Click="miAbout_Click"/>
+            <MenuItem Header="{DynamicResource MENU_HELP}">
+                <MenuItem Header="{DynamicResource MENUITEM_ABOUT}" Name="miAbout" Click="miAbout_Click"/>
             </MenuItem>
         </Menu>
         <Grid>
@@ -24,8 +24,8 @@
                 <ColumnDefinition Width="8*"/>
                 <ColumnDefinition Width="493*"/>
             </Grid.ColumnDefinitions>
-            <TabControl Grid.ColumnSpan="3">
-                <TabItem Header="Addresses" Margin="-2,0,2,0">
+            <TabControl Grid.ColumnSpan="3" x:Name="TabControls" SelectionChanged="miTabControl_SelectionChanged">
+                <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="-2,0,2,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -38,26 +38,26 @@
                             <ColumnDefinition Width="84*"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal" Grid.Column="0">
-                            <Label >Issuer: </Label>
+                            <Label Content="{DynamicResource LABEL_ISSUER}"></Label>
                             <ComboBox Name ="comboBoxIssuer" VerticalAlignment="Center" Width="150"></ComboBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Column="1">
-                            <Label>Currency Code: </Label>
+                            <Label Content="{DynamicResource LABEL_CURRENCY}"></Label>
                             <ComboBox Name ="comboBoxCurrencyCode" VerticalAlignment="Center" Width="150"></ComboBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" Margin="30,0,0,0">
-                            <Button Click="miNewAddress_Click">New Address</Button>
+                            <Button Click="miNewAddress_Click" Content="{DynamicResource BTN_NEWADDRESS}"></Button>
                         </StackPanel>
                         <ScrollViewer Grid.Row="1" Grid.ColumnSpan="4" Margin="0,10,0,0">
                             <DataGrid Name="dataGridAddresses" ItemsSource="{Binding}" AutoGenerateColumns="False" >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Width ="300*" Header="Address" Binding="{Binding Address}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width ="100*" Header ="Balance" Binding="{Binding Balance}"></DataGridTextColumn>
-                                    <DataGridTextColumn Width="200*" Header ="CurrencyCode" Binding="{Binding CurrencyCode}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width ="300*" Header="{DynamicResource DATAGRID_ADDRESS}" Binding="{Binding Address}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width ="100*" Header ="{DynamicResource DATAGRID_BALANCE}" Binding="{Binding Balance}" IsReadOnly="True"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="200*" Header ="{DynamicResource DATAGRID_CURRENCYCODE}" Binding="{Binding CurrencyCode}" IsReadOnly="True"></DataGridTextColumn>
                                 </DataGrid.Columns>
                                 <DataGrid.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem Header="Delete" Click="miDelete_Click">
+                                        <MenuItem Header="{DynamicResource MENUITEM_DELETE}" Click="miDelete_Click">
                                         </MenuItem>
                                     </ContextMenu>
                                 </DataGrid.ContextMenu>
@@ -66,7 +66,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="Pay">
+                <TabItem Header="{DynamicResource TABITEM_PAY}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -77,19 +77,32 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Pay From: " TextAlignment="Right" Margin="10"/>
-                        <ComboBox Grid.Row="0" Grid.Column="1" Width="300" Margin="10" Name="PayFrom"></ComboBox>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Pay To: " TextAlignment="Right" Margin="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_PAYFROM}" TextAlignment="Right" Margin="10"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Width="300" Margin="10" Name="payFrom" SelectionChanged="PayFromSelectionChanged"></ComboBox>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{DynamicResource TEXTBLOCK_CURRENCYCODE}" TextAlignment="Right" Margin="10"/>
+                        <TextBox Grid.Row="0" Grid.Column="3" Width="60" Margin="10" Name="payCurrencyCode"></TextBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_PAYTO}" TextAlignment="Right" Margin="10"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="payTo"></TextBox>
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Balance: " TextAlignment="Right" Margin="10" />
-                        <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="balance"></TextBox>
-                        <Button Grid.Row="3" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click">Pay</Button>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_BALANCE}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="payAmount"></TextBox>
+                        <Button Grid.Row="3" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click" Content="{DynamicResource BTN_PAY}"></Button>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Transactions" Margin="2,-2,-2,0">
+
+                <TabItem Header="{DynamicResource TABITEM_TRANSCATIONS}" Margin="2,-2,-2,0">
                     <Grid>
-                        <ScrollViewer>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="500*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <Label Content="{DynamicResource LABEL_TYPE}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name ="comboBoxTransactionType" VerticalAlignment="Center" Width="150" SelectionChanged="TransactionTypeSelectionChanged" />
+                        </StackPanel>
+                        <ScrollViewer Grid.Row="1">
                             <DataGrid Name="dataGridTransactions" AutoGenerateColumns="True" >
                             </DataGrid>
                         </ScrollViewer>
