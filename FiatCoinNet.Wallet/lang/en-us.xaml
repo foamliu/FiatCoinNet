@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <s:String x:Key="WINDOW_TITLE">Wallet</s:String>
+    <s:String x:Key="MENU_FILE">File</s:String>
+    <s:String x:Key="MENU_OPERATION">Operation</s:String>
+    <s:String x:Key="MENU_HELP">Help</s:String>
+
+    <s:String x:Key="MENUITEM_EXIT">Exit</s:String>
+    <s:String x:Key="MENUITEM_SETTING">Setting</s:String>
+    <s:String x:Key="MENUITEM_ABOUT">About</s:String>
+    <s:String x:Key="MENUITEM_DELETE">Delete</s:String>
+
+    <s:String x:Key="TABITEM_ADDRESSES">Addresses</s:String>
+    <s:String x:Key="TABITEM_PAY">Pay</s:String>
+    <s:String x:Key="TABITEM_TRANSCATIONS">Transactions</s:String>
+
+    <s:String x:Key="LABEL_ISSUER">Issuer</s:String>
+    <s:String x:Key="LABEL_CURRENCY">Currency Code</s:String>
+    <s:String x:Key="BTN_NEWADDRESS">New Address</s:String>
+
+    <s:String x:Key="DATAGRID_ADDRESS">Address</s:String>
+    <s:String x:Key="DATAGRID_BALANCE">Balance</s:String>
+    <s:String x:Key="DATAGRID_CURRENCYCODE">CurrencyCode</s:String>
+
+    <s:String x:Key="TEXTBLOCK_PAYFROM">Pay From:</s:String>
+    <s:String x:Key="TEXTBLOCK_PAYTO">Pay To:</s:String>
+    <s:String x:Key="TEXTBLOCK_CURRENCYCODE">Currency Code</s:String>
+    <s:String x:Key="TEXTBLOCK_BALANCE">Balance:</s:String>
+    <s:String x:Key="BTN_PAY">Pay</s:String>
+
+    <s:String x:Key="LABEL_TYPE">Type</s:String>
+
+
+</ResourceDictionary>

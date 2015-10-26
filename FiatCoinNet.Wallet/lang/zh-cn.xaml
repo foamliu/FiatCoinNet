@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <s:String x:Key="WINDOW_TITLE">钱包</s:String>
+    <s:String x:Key="MENU_FILE">文件</s:String>
+    <s:String x:Key="MENU_OPERATION">操作</s:String>
+    <s:String x:Key="MENU_HELP">帮助</s:String>
+
+    <s:String x:Key="MENUITEM_EXIT">退出</s:String>
+    <s:String x:Key="MENUITEM_SETTING">设置</s:String>
+    <s:String x:Key="MENUITEM_ABOUT">关于</s:String>
+    <s:String x:Key="MENUITEM_DELETE">删除</s:String>
+
+    <s:String x:Key="TABITEM_ADDRESSES">账户</s:String>
+    <s:String x:Key="TABITEM_PAY">转账</s:String>
+    <s:String x:Key="TABITEM_TRANSCATIONS">交易记录</s:String>
+
+    <s:String x:Key="LABEL_ISSUER">开户行</s:String>
+    <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>
+    <s:String x:Key="BTN_NEWADDRESS">新建账户</s:String>
+
+    <s:String x:Key="DATAGRID_ADDRESS">账户</s:String>
+    <s:String x:Key="DATAGRID_BALANCE">余额</s:String>
+    <s:String x:Key="DATAGRID_CURRENCYCODE">货币代码</s:String>
+
+    <s:String x:Key="TEXTBLOCK_PAYFROM">付款账户：</s:String>
+    <s:String x:Key="TEXTBLOCK_PAYTO">收款账户：</s:String>
+    <s:String x:Key="TEXTBLOCK_BALANCE">付款金额：</s:String>
+    <s:String x:Key="TEXTBLOCK_CURRENCYCODE">货币代码</s:String>
+    <s:String x:Key="BTN_PAY">转账</s:String>
+
+    <s:String x:Key="LABEL_TYPE">种类</s:String>
+
+</ResourceDictionary>
