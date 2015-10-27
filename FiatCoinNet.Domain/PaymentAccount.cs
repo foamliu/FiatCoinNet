@@ -50,8 +50,20 @@ namespace FiatCoinNet.Domain
         /// <summary>
         /// Private key in base64
         /// </summary>
-        [IgnoreDataMember]
+        [DataMember]
         public string PrivateKey { get; set; }
         #endregion
+
+        public PaymentAccount Mask()
+        {
+            return new PaymentAccount
+            {
+                Address = this.Address,
+                IssuerId = this.IssuerId,
+                CurrencyCode = this.CurrencyCode,
+                Type = this.Type,
+                PublicKey = this.PublicKey,
+            };
+        }
     }
 }

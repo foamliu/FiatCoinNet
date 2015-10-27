@@ -56,7 +56,7 @@ namespace FiatCoinNet.WalletGui
             string requestUri = string.Format("issuer/api/{0}/accounts/register", issuerId);
             var registerRequest = new RegisterRequest
             {
-                PaymentAccount = account
+                PaymentAccount = account.Mask()
             };
             HttpContent content = new StringContent(JsonHelper.Serialize(registerRequest));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
