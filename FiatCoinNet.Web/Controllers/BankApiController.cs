@@ -30,7 +30,7 @@ namespace FiatCoinNetWeb.Controllers
             var issuer1 = new Issuer
             {
                 Id = 1010,
-                Name = "Microsoft",
+                Name = "菲特银行北海分行",
                 PublicKey = "RUNTMSAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G",
                 PrivateKey = "RUNTMiAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G65oCkARn28CZeMfTC9i84DMlfc7vwSABoRVRmWlaLR4=",
                 SignatureToCertifyIssuer = "",
@@ -42,7 +42,7 @@ namespace FiatCoinNetWeb.Controllers
             var issuer2 = new Issuer
             {
                 Id = 1942,
-                Name = "Bank of America",
+                Name = "菲特银行南海分行",
                 PublicKey = "RUNTMSAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6",
                 PrivateKey = "RUNTMiAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6bLAWC+sFREWvj1rfY97K49tosn9eg5CQ9Q3e1i59zgQ=",
                 SignatureToCertifyIssuer = "",
