@@ -47,7 +47,6 @@ namespace FiatCoinNet.Common
         public static string Sign(string privateKey, string message)
         {
             string signature = null;
-            
             using (CngKey k = CngKey.Import(Convert.FromBase64String(privateKey), CngKeyBlobFormat.EccPrivateBlob))
             using (ECDsaCng dsa = new ECDsaCng(k))
             {

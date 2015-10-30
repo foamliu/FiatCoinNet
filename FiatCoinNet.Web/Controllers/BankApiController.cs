@@ -137,5 +137,17 @@ namespace FiatCoinNetWeb.Controllers
         {
             return s_Period;
         }
+
+        [HttpPost]
+        [Route("certifier/api/postblock")]
+        public void PostBlock(LowerLevelBlock block)
+        {
+            HigherLevelBlock highLevelBlock = new HigherLevelBlock();
+            highLevelBlock.Hash = block.Hash;
+            highLevelBlock.Period = block.Period;
+            highLevelBlock.TransactionSet = block.TransactionSet;
+            highLevelBlock.Signature = block.Signature;
+            s_Blocks.Add(highLevelBlock);
+        }
     }
 }

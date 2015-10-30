@@ -189,6 +189,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IssuerApiController.cs" />
     <Compile Include="Controllers\IssuerController.cs" />
+    <Compile Include="Controllers\PrincipleController.cs" />
     <Compile Include="DataAccess\ConvertHelper.cs" />
     <Compile Include="DataAccess\DataAccessor.cs" />
     <Compile Include="DataAccess\Implementation.cs" />
@@ -254,6 +255,7 @@
     <Content Include="Views\Bank\Index.cshtml" />
     <Content Include="Views\Issuer\Index.cshtml" />
     <Content Include="Views\Download\Index.cshtml" />
+    <Content Include="Views\Principle\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiatCoinNet.Common\FiatCoinNet.Common.csproj">

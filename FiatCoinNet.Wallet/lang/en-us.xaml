@@ -28,6 +28,7 @@
     <s:String x:Key="TEXTBLOCK_PAYTO">Pay To:</s:String>
     <s:String x:Key="TEXTBLOCK_CURRENCYCODE">Currency Code</s:String>
     <s:String x:Key="TEXTBLOCK_BALANCE">Balance:</s:String>
+    <s:String x:Key="TEXTBLOCK_MEMODATA">MemoData:</s:String>
     <s:String x:Key="BTN_PAY">Pay</s:String>
 
     <s:String x:Key="LABEL_TYPE">Type</s:String>

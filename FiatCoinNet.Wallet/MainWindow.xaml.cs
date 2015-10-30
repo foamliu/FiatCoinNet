@@ -32,8 +32,8 @@ namespace FiatCoinNet.WalletGui
 
         private List<PaymentTransaction> m_Transactions = new List<PaymentTransaction>();
 
-        //private const string baseUrl = "http://localhost:48701/"; 
-        private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
+        private const string baseUrl = "http://localhost:48701/"; 
+        //private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
         public static readonly HttpClient HttpClient = new HttpClient
         {
             BaseAddress = new Uri(baseUrl),
@@ -56,14 +56,28 @@ namespace FiatCoinNet.WalletGui
             CryptoHelper.GenerateKeyPair(out privateKey, out publicKey);
 
             string fingerPrint = CryptoHelper.Hash(publicKey);
+            int issuerId = 0;
+            try
+            {
+                issuerId = (int)comboBoxIssuer.SelectedValue;
+            }
+            catch(Exception)
+            {
+                MessageBox.Show("请选择开户银行","警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-            int issuerId = (int)comboBoxIssuer.SelectedValue;
             string currencyCode = (string)comboBoxCurrencyCode.SelectedValue;
+            if(currencyCode == null)
+            {
+                MessageBox.Show("请选择交易货币代码", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             var account = new PaymentAccount
             {
                 Address = FiatCoinHelper.ToAddress(issuerId, fingerPrint),
                 CurrencyCode = currencyCode,
-                Balance = 10.00m,
+                Balance = 0.00m,
                 PublicKey = publicKey,
                 PrivateKey = null
             };
@@ -72,7 +86,7 @@ namespace FiatCoinNet.WalletGui
             string requestUri = string.Format("issuer/api/{0}/accounts/register", issuerId);
             var registerRequest = new RegisterRequest
             {
-                PaymentAccount = account
+                PaymentAccount = account.Mask()
             };
             HttpContent content = new StringContent(JsonHelper.Serialize(registerRequest));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -84,6 +98,8 @@ namespace FiatCoinNet.WalletGui
 
             this.UpdateAddressDataGrid();
             this.Save();
+
+
         }
 
         private void miDelete_Click(object sender, RoutedEventArgs e)
@@ -190,8 +206,27 @@ namespace FiatCoinNet.WalletGui
 
         private void btnPay_Click(object sender, RoutedEventArgs e)
         {
-            int issuerId = FiatCoinHelper.GetIssuerId(payFrom.SelectedValue.ToString());
+            int issuerId = 0;
+            try
+            {
+                issuerId = FiatCoinHelper.GetIssuerId(payFrom.SelectedValue.ToString());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("请选择付款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             string requestUri = string.Format("issuer/api/{0}/accounts/pay", issuerId);
+            if (payTo.Text == "")
+            {
+                MessageBox.Show("请填写收款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (payAmount.Text == "")
+            {
+                MessageBox.Show("请填写付款金额", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             var payRequest = new DirectPayRequest
             {
                 PaymentTransaction = new PaymentTransaction
@@ -200,7 +235,7 @@ namespace FiatCoinNet.WalletGui
                     Dest = payTo.Text,
                     Amount = Convert.ToDecimal(payAmount.Text),
                     CurrencyCode = payCurrencyCode.Text,
-                    MemoData = "surface"
+                    MemoData = MemoData.Text
                 }
             };
             payRequest.Signature = CryptoHelper.Sign(m_Wallet.PaymentAccounts[payFrom.SelectedIndex].PrivateKey, payRequest.ToMessage());
@@ -307,7 +342,7 @@ namespace FiatCoinNet.WalletGui
                 HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
-                response.EnsureSuccessStatusCode();
+                //response.EnsureSuccessStatusCode();
                 paymentAccount.Balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
             }
         }
@@ -320,23 +355,21 @@ namespace FiatCoinNet.WalletGui
         private List<PaymentTransaction> GetAllTransactions()
         {
             List<PaymentTransaction> result = new List<PaymentTransaction>();
-            foreach (var paymentAccount in m_Wallet.PaymentAccounts)
+            string requestUri = "certifier/api/blocks";
+            HttpResponseMessage response = HttpClient.GetAsync(requestUri).Result;
+            if (response.IsSuccessStatusCode)
             {
-                string requestUri = "issuer/api/transactions/get";
-                var getRequest = new GetAccountRequest
+                List<HigherLevelBlock> transactions = response.Content.ReadAsAsync<List<HigherLevelBlock>>().Result;
+                foreach(var block in transactions)
                 {
-                    Address = paymentAccount.Address
-                };
-                HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    List<PaymentTransaction> transactions = response.Content.ReadAsAsync<List<PaymentTransaction>>().Result;
-                    result.AddRange(transactions);
+                    PaymentTransaction trans = new PaymentTransaction();
+                    trans = block.TransactionSet[0];
+                    result.Add(trans);
                 }
             }
+
             return result;
         }
+
     }
 }

@@ -73,11 +73,13 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="80" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_PAYFROM}" TextAlignment="Right" Margin="10"/>
@@ -88,7 +90,9 @@
                         <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="payTo"></TextBox>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_BALANCE}" TextAlignment="Right" Margin="10" />
                         <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="payAmount"></TextBox>
-                        <Button Grid.Row="3" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click" Content="{DynamicResource BTN_PAY}"></Button>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_MEMODATA}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Width="300" Margin="10" Name="MemoData"></TextBox>
+                        <Button Grid.Row="4" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click" Content="{DynamicResource BTN_PAY}"></Button>
                     </Grid>
                 </TabItem>
 

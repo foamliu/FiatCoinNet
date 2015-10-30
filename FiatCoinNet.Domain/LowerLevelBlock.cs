@@ -24,5 +24,10 @@ namespace FiatCoinNet.Domain
 
         [DataMember]
         public string SignatureToCertifyIssuer { get; set; }
+
+        public LowerLevelBlock()
+        {
+            TransactionSet = new List<PaymentTransaction>();
+        }
     }
 }
