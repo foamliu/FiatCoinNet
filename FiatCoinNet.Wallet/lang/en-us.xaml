@@ -33,5 +33,15 @@
 
     <s:String x:Key="LABEL_TYPE">Type</s:String>
 
+    <s:String x:Key="GRID_AMOUNT">Amount</s:String>
+    <s:String x:Key="GRID_CURRENCYCODE">CurrentCode</s:String>
+    <s:String x:Key="GRID_SOURCE">Source</s:String>
+    <s:String x:Key="GRID_DEST">Dest</s:String>
+    <s:String x:Key="GRID_ISSUERID">IssuerId</s:String>
+    <s:String x:Key="GRID_INVOICEID">InvoiceId</s:String>
+    <s:String x:Key="GRID_REFPAYMENTTRXID">RefPaymentTrxId</s:String>
+    <s:String x:Key="GRID_MEMODATA">MemoData</s:String>
+    <s:String x:Key="GRID_TRANSACTIONID">TransactionId</s:String>
+
 
 </ResourceDictionary>

@@ -15,11 +15,12 @@ namespace FiatCoinNet.WalletGui
 {
     public enum TransactionType
     {
-        All = 0,
+        所有交易 = 0,
 
-        Sent = 1,
+        转出 = 1,
 
-        Received = 2
+        转入 = 2
+
     }
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -177,14 +178,15 @@ namespace FiatCoinNet.WalletGui
                 string value = comboBoxTransactionType.SelectedValue.ToString();
                 switch (value)
                 {
-                    case "All":
+                    case "所有交易":
                         m_Transactions = GetAllTransactions();
                         break;
-                    case "Sent":
+                    case "转出":
                         break;
-                    case "Received":
+                    case "转入":
                         break;
                 }
+
                 this.UpdateTransactionDataGrid();
             }
         }

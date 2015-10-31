@@ -33,4 +33,15 @@
 
     <s:String x:Key="LABEL_TYPE">种类</s:String>
 
+    <s:String x:Key="GRID_AMOUNT">金额</s:String>
+    <s:String x:Key="GRID_CURRENCYCODE">货种</s:String>
+    <s:String x:Key="GRID_SOURCE">付款账户</s:String>
+    <s:String x:Key="GRID_DEST">收款账户</s:String>
+    <s:String x:Key="GRID_ISSUERID">付款银行</s:String>
+    <s:String x:Key="GRID_INVOICEID">收据单号</s:String>
+    <s:String x:Key="GRID_REFPAYMENTTRXID">付款交易号</s:String>
+    <s:String x:Key="GRID_MEMODATA">附言</s:String>
+    <s:String x:Key="GRID_TRANSACTIONID">交易号</s:String>
+
+
 </ResourceDictionary>

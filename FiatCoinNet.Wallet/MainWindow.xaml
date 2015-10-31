@@ -107,7 +107,18 @@
                             <ComboBox x:Name ="comboBoxTransactionType" VerticalAlignment="Center" Width="150" SelectionChanged="TransactionTypeSelectionChanged" />
                         </StackPanel>
                         <ScrollViewer Grid.Row="1">
-                            <DataGrid Name="dataGridTransactions" AutoGenerateColumns="True" >
+                            <DataGrid Name="dataGridTransactions" AutoGenerateColumns="False" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_AMOUNT}" Binding="{Binding Amount}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_CURRENCYCODE}" Binding="{Binding CurrencyCode}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_SOURCE}" Binding="{Binding Source}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_DEST}" Binding="{Binding Dest}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_ISSUERID}" Binding="{Binding IssuerId}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_INVOICEID}" Binding="{Binding InvoiceID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_REFPAYMENTTRXID}" Binding="{Binding RefPaymentTrxId}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_MEMODATA}" Binding="{Binding MemoData}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_TRANSACTIONID}" Binding="{Binding TransactionId}"></DataGridTextColumn>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </ScrollViewer>
                     </Grid>
