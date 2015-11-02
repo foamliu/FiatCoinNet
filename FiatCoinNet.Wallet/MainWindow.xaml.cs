@@ -97,6 +97,30 @@ namespace FiatCoinNet.WalletGui
             account.PrivateKey = privateKey;
             this.m_Wallet.PaymentAccounts.Add(account);
 
+            //Allocate initial balance
+            string baseAccount = "8gMAAA==+u3qZ1H9Ha0dOT6WX3d7Hr9npKQRreoFdGp4VourKtQ=";
+            requestUri = string.Format("issuer/api/{0}/accounts/pay", issuerId);
+            Random ran = new Random();
+            int i_ranAmount = ran.Next(1, 499);
+            float f_ranAmount = (float)(i_ranAmount * 0.01);
+            var payRequest = new DirectPayRequest
+            {
+                PaymentTransaction = new PaymentTransaction
+                {
+                    Source = baseAccount,
+                    Dest = Convert.ToBase64String(BitConverter.GetBytes(issuerId)) + fingerPrint,
+                    Amount = Convert.ToDecimal(f_ranAmount),
+                    CurrencyCode = currencyCode,
+                    MemoData = "Initial-balance"
+                }
+            };
+            payRequest.Signature = CryptoHelper.Sign("RUNTMiAAAAA7Fyutk/Pd2VotgUewM7QpS0lTMUwZC0PewDg47HFhIoq0rjlnUTraDpS5gurmvVybU357HBOZkX3aKon4FcSdrLKIvEgjHUbRuUt2bze5HNflkQRitCWbxYc7FVGxlog=", payRequest.ToMessage());
+            content = new StringContent(JsonHelper.Serialize(payRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response = HttpClient.PostAsync(requestUri, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            GetBalances();
             this.UpdateAddressDataGrid();
             this.Save();
 
