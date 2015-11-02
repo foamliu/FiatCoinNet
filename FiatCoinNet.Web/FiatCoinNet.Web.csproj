@@ -262,6 +262,7 @@
     <Content Include="Views\Issuer\Index.cshtml" />
     <Content Include="Views\Download\Index.cshtml" />
     <Content Include="Views\Principle\Index.cshtml" />
+    <Content Include="Wallet.rar" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FiatCoinNet.Common\FiatCoinNet.Common.csproj">
