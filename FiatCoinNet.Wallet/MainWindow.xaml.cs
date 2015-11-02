@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -33,8 +34,8 @@ namespace FiatCoinNet.WalletGui
 
         private List<PaymentTransaction> m_Transactions = new List<PaymentTransaction>();
 
-        private const string baseUrl = "http://localhost:48701/"; 
-        //private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
+        //private const string baseUrl = "http://localhost:48701/"; 
+        private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
         public static readonly HttpClient HttpClient = new HttpClient
         {
             BaseAddress = new Uri(baseUrl),
@@ -239,20 +240,14 @@ namespace FiatCoinNet.WalletGui
             }
             catch (Exception)
             {
-                MessageBox.Show("请选择付款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("请选择收款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (!validateTransaction(payFrom.SelectedValue.ToString(), payTo.Text, payAmount.Text))
+            {
                 return;
             }
             string requestUri = string.Format("issuer/api/{0}/accounts/pay", issuerId);
-            if (payTo.Text == "")
-            {
-                MessageBox.Show("请填写收款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            if (payAmount.Text == "")
-            {
-                MessageBox.Show("请填写付款金额", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
             var payRequest = new DirectPayRequest
             {
                 PaymentTransaction = new PaymentTransaction
@@ -268,7 +263,16 @@ namespace FiatCoinNet.WalletGui
             HttpContent content = new StringContent(JsonHelper.Serialize(payRequest));
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("付款失败,错误码:" + ex);
+                return;
+            }
+            
 
             TabControls.SelectedIndex = 2;
         }
@@ -395,6 +399,59 @@ namespace FiatCoinNet.WalletGui
             }
 
             return result;
+        }
+
+        private bool validateTransaction(string PayFrom, string PayTo, string payAmount)
+        {
+            //TO DO: check the balance available for transaction
+            int issuerId = FiatCoinHelper.GetIssuerId(PayFrom);
+
+            if (payAmount == "")
+            {
+                MessageBox.Show("请填写付款金额", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            else if(!IsNumeric(payAmount))
+            {
+                MessageBox.Show("请填写正确的付款金额", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            string requestUri = string.Format("issuer/api/{0}/accounts/get", issuerId);
+            var getRequest = new GetAccountRequest
+            {
+                Address = PayFrom
+            };
+            HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            decimal balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
+            if(Convert.ToDecimal(payAmount) > balance)
+            {
+                MessageBox.Show("余额不足", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            //TO DO: check the payTo account for available
+            if (payTo.Text == "")
+            {
+                MessageBox.Show("请填写收款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            try
+            {
+                issuerId = FiatCoinHelper.GetIssuerId(PayTo);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("此收款账户不存在", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+            
+        }
+
+        private static bool IsNumeric(string value)
+        {
+            return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
         }
 
     }

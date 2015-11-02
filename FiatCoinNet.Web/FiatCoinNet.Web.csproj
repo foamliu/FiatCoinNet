@@ -205,7 +205,10 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Picture\bank.png" />
     <Content Include="Picture\FiatCoinLogo.png" />
+    <Content Include="Picture\issuer.png" />
+    <Content Include="Picture\wallet.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />
@@ -228,6 +231,8 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="ApplicationInsights.config" />
+    <None Include="Properties\PublishProfiles\fiatcoinet %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\fiatcoinet %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\fiatcoinet.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
