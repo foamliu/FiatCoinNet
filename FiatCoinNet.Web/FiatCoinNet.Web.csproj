@@ -208,6 +208,8 @@
     <Content Include="Picture\bank.png" />
     <Content Include="Picture\FiatCoinLogo.png" />
     <Content Include="Picture\issuer.png" />
+    <Content Include="Picture\Issuer1.jpg" />
+    <Content Include="Picture\Issuer2.jpg" />
     <Content Include="Picture\wallet.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

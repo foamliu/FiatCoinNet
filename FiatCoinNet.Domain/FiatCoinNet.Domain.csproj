@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AccountOwner.cs" />
     <Compile Include="Bank.cs" />
+    <Compile Include="BlockHeader.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="HigherLevelBlock.cs" />
     <Compile Include="LowerLevelBlock.cs" />
