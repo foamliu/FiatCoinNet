@@ -34,8 +34,8 @@ namespace FiatCoinNet.WalletGui
 
         private List<PaymentTransaction> m_Transactions = new List<PaymentTransaction>();
 
-        //private const string baseUrl = "http://localhost:48701/"; 
-        private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
+        private const string baseUrl = "http://localhost:48701/"; 
+        //private const string baseUrl = "http://fiatcoinet.azurewebsites.net/";
         public static readonly HttpClient HttpClient = new HttpClient
         {
             BaseAddress = new Uri(baseUrl),
@@ -124,8 +124,6 @@ namespace FiatCoinNet.WalletGui
             GetBalances();
             this.UpdateAddressDataGrid();
             this.Save();
-
-
         }
 
         private void miDelete_Click(object sender, RoutedEventArgs e)
@@ -256,7 +254,7 @@ namespace FiatCoinNet.WalletGui
                     Dest = payTo.Text,
                     Amount = Convert.ToDecimal(payAmount.Text),
                     CurrencyCode = payCurrencyCode.Text,
-                    MemoData = MemoData.Text
+                    MemoData = MemoData.Text,
                 }
             };
             payRequest.Signature = CryptoHelper.Sign(m_Wallet.PaymentAccounts[payFrom.SelectedIndex].PrivateKey, payRequest.ToMessage());
@@ -272,7 +270,6 @@ namespace FiatCoinNet.WalletGui
                 MessageBox.Show("付款失败,错误码:" + ex);
                 return;
             }
-            
 
             TabControls.SelectedIndex = 2;
         }
@@ -390,7 +387,7 @@ namespace FiatCoinNet.WalletGui
             if (response.IsSuccessStatusCode)
             {
                 List<HigherLevelBlock> transactions = response.Content.ReadAsAsync<List<HigherLevelBlock>>().Result;
-                foreach(var block in transactions)
+                foreach (var block in transactions)
                 {
                     PaymentTransaction trans = new PaymentTransaction();
                     trans = block.TransactionSet[0];
@@ -400,6 +397,7 @@ namespace FiatCoinNet.WalletGui
 
             return result;
         }
+
 
         private bool validateTransaction(string PayFrom, string PayTo, string payAmount)
         {

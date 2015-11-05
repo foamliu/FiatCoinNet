@@ -25,7 +25,9 @@ namespace FiatCoinNet.Domain
         [DataMember]
         public List<PaymentTransaction> TransactionSet { get; set; }
 
-        //Below are not included in bitcoin official doc
+        //Above are included in bitcoin official doc
+        [DataMember]
+        public string hashPrevBlock { get; set; }
 
         [DataMember]
         public long Period { get; set; }

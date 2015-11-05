@@ -15,6 +15,7 @@ namespace FiatCoinNetWeb.Controllers
         private static readonly List<HigherLevelBlock> s_Blocks;
         private static readonly List<Tuple<long, string>> s_Hashes;
         private static long s_Period = 0;
+        private string s_hashPrevBlock = "";
 
         public static List<Issuer> CertifiedIssuers { get; set; }
 
@@ -139,8 +140,8 @@ namespace FiatCoinNetWeb.Controllers
         }
 
         [HttpPost]
-        [Route("certifier/api/postblock")]
-        public void PostBlock(LowerLevelBlock block)
+        [Route("certifier/api/CreateHigherLevelBlock")]
+        public void CreateHigherLevelBlock(LowerLevelBlock block)
         {
             HigherLevelBlock highLevelBlock = new HigherLevelBlock();
             highLevelBlock.Hash = block.Hash;
@@ -149,5 +150,22 @@ namespace FiatCoinNetWeb.Controllers
             highLevelBlock.Signature = block.Signature;
             s_Blocks.Add(highLevelBlock);
         }
+
+        [HttpPost]
+        [Route("certifier/api/HashPrevBlock")]
+        public HttpResponseMessage postHashPrevBlock(LowerLevelBlock block)
+        {
+            s_hashPrevBlock = block.Hash;
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("certifier/api/HashPrevBlock")]
+        public string getHashPrevBlock()
+        {
+            return s_hashPrevBlock;
+        }
+
+        
     }
 }
