@@ -146,7 +146,7 @@ namespace FiatCoinNet.WalletGui
             var toDeleteFromBindedList = (PaymentAccount)item.SelectedCells[0].Item;
 
             // unregister this account
-            int issuerId = 1942;
+            int issuerId = toDeleteFromBindedList.IssuerId;
             string requestUri = string.Format("issuer/api/{0}/accounts/unregister", issuerId);
             var unregisterRequest = new UnregisterRequest
             {
@@ -235,12 +235,14 @@ namespace FiatCoinNet.WalletGui
 
         private void miSettings_Click(object sender, RoutedEventArgs e)
         {
-
+            Settings settings = new Settings();
+            settings.Show();
         }
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
-
+            About about = new About();
+            about.Show();
         }
 
         private void btnPay_Click(object sender, RoutedEventArgs e)

@@ -3,6 +3,8 @@
                     xmlns:s="clr-namespace:System;assembly=mscorlib">
 
     <s:String x:Key="WINDOW_TITLE">钱包</s:String>
+    <s:String x:Key="WINDOW_TITLE_ABOUT">关于</s:String>
+    <s:String x:Key="WINDOW_TITLE_SETTINGS">设置</s:String>
     <s:String x:Key="MENU_FILE">文件</s:String>
     <s:String x:Key="MENU_OPERATION">操作</s:String>
     <s:String x:Key="MENU_HELP">帮助</s:String>
@@ -51,6 +53,15 @@
     <s:String x:Key="TEXTBLOCK_EXCHANGERATE">实时汇率:</s:String>
     <s:String x:Key="TEXTBLOCK_EXCHANGERATEURI">实时汇率由Fixer.io提供</s:String>
     <s:String x:Key="BTN_EXCHANGE">兑换</s:String>
-    
+
+    <s:String x:Key="ABOUT_CONTENT0">菲特币钱包 版本 v0.1 (64 位)</s:String>
+    <s:String x:Key="ABOUT_CONTENT1">版权所有 (C) 2009-2015 FiatCoin开发者</s:String>
+    <s:String x:Key="ABOUT_CONTENT2">这是实验性的软件。</s:String>
+
+    <s:String x:Key="SETTING_LANGUAGE">语言设置:</s:String>
+
+
+
+
 
 </ResourceDictionary>

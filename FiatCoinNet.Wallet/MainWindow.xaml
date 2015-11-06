@@ -151,7 +151,7 @@
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_EXCHANGERATE}" TextAlignment="Right" Margin="10" />
                         <TextBox Grid.Row="4" Grid.Column="1" Width="300" Margin="10" Name="exchangeRate" IsReadOnly="True"></TextBox>
                         <TextBlock Grid.Row="4" Grid.Column="2" Text="{DynamicResource TEXTBLOCK_EXCHANGERATEURI}" TextAlignment="Left" Margin="10"/>
-                        <Button Grid.Row="5" Grid.Column="1" Name="bt1nPay" Margin="10" Width ="100" Click="btnExchange_Click" Content="{DynamicResource BTN_EXCHANGE}"></Button>
+                        <Button Grid.Row="5" Grid.Column="1" Name="btnExchange" Margin="10" Width ="100" Click="btnExchange_Click" Content="{DynamicResource BTN_EXCHANGE}"></Button>
                     </Grid>
                     
                 </TabItem>
