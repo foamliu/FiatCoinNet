@@ -1,6 +1,8 @@
 ﻿using FiatCoinNet.Common;
 using FiatCoinNet.Domain;
 using FiatCoinNet.Domain.Requests;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,6 +50,8 @@ namespace FiatCoinNet.WalletGui
             BindCompanyNameAndCurrencyCode();
             BindAddressForPay();
             BindTransactionType();
+            BindAddressForExchange();
+            BindCurrencyCodeForExchange();
         }
 
 
@@ -194,6 +198,16 @@ namespace FiatCoinNet.WalletGui
             }
         }
 
+        private void exchangePayFromSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.Source is ComboBox)
+            {
+                int index = exchangePayFrom.SelectedIndex;
+                exchangeAccountCurrency.Text = m_Wallet.PaymentAccounts[index].CurrencyCode;
+                exchangePayTo.Text = "稍后我们会为您创建新的账户";
+            }
+        }
+
         private void TransactionTypeSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             if (selectionChangedEventArgs.Source is ComboBox)
@@ -238,7 +252,7 @@ namespace FiatCoinNet.WalletGui
             }
             catch (Exception)
             {
-                MessageBox.Show("请选择收款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("请选择付款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             if (!validateTransaction(payFrom.SelectedValue.ToString(), payTo.Text, payAmount.Text))
@@ -333,8 +347,20 @@ namespace FiatCoinNet.WalletGui
             if (m_Wallet.PaymentAccounts.Count > 0)
             {
                 payCurrencyCode.Text = m_Wallet.PaymentAccounts[0].CurrencyCode;
-
             }
+        }
+        
+        private void BindAddressForExchange()
+        {
+            exchangePayFrom.ItemsSource = m_Wallet.PaymentAccounts;
+            exchangePayFrom.SelectedValuePath = "Address";
+            exchangePayFrom.DisplayMemberPath = "Address";
+        }
+
+        private void BindCurrencyCodeForExchange()
+        {
+            List<string> currencyCodes = DataAccessor.GetCurrencyCodes();
+            exchangeCurrency.ItemsSource = currencyCodes;
         }
 
         private void BindTransactionType()
@@ -402,7 +428,6 @@ namespace FiatCoinNet.WalletGui
         private bool validateTransaction(string PayFrom, string PayTo, string payAmount)
         {
             //TO DO: check the balance available for transaction
-            int issuerId = FiatCoinHelper.GetIssuerId(PayFrom);
 
             if (payAmount == "")
             {
@@ -414,15 +439,7 @@ namespace FiatCoinNet.WalletGui
                 MessageBox.Show("请填写正确的付款金额", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
-            string requestUri = string.Format("issuer/api/{0}/accounts/get", issuerId);
-            var getRequest = new GetAccountRequest
-            {
-                Address = PayFrom
-            };
-            HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
-            decimal balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
+            decimal balance = GetAccountBalance(PayFrom);
             if(Convert.ToDecimal(payAmount) > balance)
             {
                 MessageBox.Show("余额不足", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -436,7 +453,7 @@ namespace FiatCoinNet.WalletGui
             }
             try
             {
-                issuerId = FiatCoinHelper.GetIssuerId(PayTo);
+                int issuerId = FiatCoinHelper.GetIssuerId(PayTo);
             }
             catch (Exception)
             {
@@ -452,5 +469,156 @@ namespace FiatCoinNet.WalletGui
             return Regex.IsMatch(value, @"^[+-]?\d*[.]?\d*$");
         }
 
+        private void exchangeCurrencySelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            if (selectionChangedEventArgs.Source is ComboBox)
+            {
+                int index = exchangeCurrency.SelectedIndex;
+                string exchangeFrom = m_Wallet.PaymentAccounts[index].CurrencyCode;
+                string exchangeTo = exchangeCurrency.SelectedValue.ToString();
+                if(exchangeFrom == exchangeTo)
+                {
+                    exchangeRate.Text = "1";
+                    return;
+                }
+                string baseUrlForExchange = "http://api.fixer.io/";
+                HttpClient HttpClientForExchange = new HttpClient{
+                    BaseAddress = new Uri(baseUrlForExchange),
+                };
+                string requestUri = "latest?base=" + exchangeFrom;
+                HttpResponseMessage response = HttpClientForExchange.GetAsync(requestUri).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    JObject jo = (JObject)JsonConvert.DeserializeObject(result);
+                    exchangeRate.Text = (string)jo["rates"][exchangeTo];
+                }
+            }
+        }
+
+        private void btnExchange_Click(object sender, RoutedEventArgs e)
+        {
+            int issuerId = 0;
+            try
+            {
+                issuerId = FiatCoinHelper.GetIssuerId(exchangePayFrom.SelectedValue.ToString());
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("请选择付款账户", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            //TODO:create new account for exchange currency
+            string destAccount = NewAddressForExchange();
+            MessageBox.Show("您的新账户为 " + destAccount);
+
+            string requestUri = string.Format("issuer/api/{0}/accounts/pay", issuerId);
+            decimal balance = GetAccountBalance(exchangePayFrom.Text);
+            decimal exchangeAmount = Convert.ToDecimal(exchangeRate.Text) * balance;
+            var payRequest = new DirectPayRequest
+            {
+                PaymentTransaction = new PaymentTransaction
+                {
+                    Source = exchangePayFrom.SelectedValue.ToString(),
+                    Dest = destAccount,
+                    Amount = exchangeAmount,
+                    CurrencyCode = exchangeCurrency.SelectedValue.ToString(),
+                    MemoData = "Exchange from " + exchangeAccountCurrency.Text + " to " + exchangeCurrency.Text,
+                }
+            };
+            payRequest.Signature = CryptoHelper.Sign(m_Wallet.PaymentAccounts[exchangePayFrom.SelectedIndex].PrivateKey, payRequest.ToMessage());
+            HttpContent content = new StringContent(JsonHelper.Serialize(payRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("兑换失败,错误码:" + ex);
+                return;
+            }
+            MessageBox.Show("账户兑换为 " + exchangeCurrency.Text + " 余额为 " + GetAccountBalance(destAccount));
+            //TODO: Delete former account
+            RemoveOldAddressForExchange(exchangePayFrom.SelectedValue.ToString());
+
+            MessageBox.Show("兑换成功");
+            exchangePayTo.Text = destAccount;
+
+            GetBalances();
+            this.UpdateAddressDataGrid();
+            this.Save();
+        }
+
+        private void RemoveOldAddressForExchange(string account)
+        {
+            // unregister this account
+            int issuerId = FiatCoinHelper.GetIssuerId(account);
+            string requestUri = string.Format("issuer/api/{0}/accounts/unregister", issuerId);
+            var unregisterRequest = new UnregisterRequest
+            {
+                Address = account
+            };
+            unregisterRequest.Signature = CryptoHelper.Sign(m_Wallet.PaymentAccounts[exchangePayFrom.SelectedIndex].PrivateKey, unregisterRequest.ToMessage());
+            HttpContent content = new StringContent(JsonHelper.Serialize(unregisterRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            m_Wallet.PaymentAccounts.Remove(m_Wallet.PaymentAccounts[exchangePayFrom.SelectedIndex]);
+
+            this.UpdateAddressDataGrid();
+            this.Save();
+        }
+
+        private string NewAddressForExchange()
+        {
+            string privateKey;
+            string publicKey;
+            CryptoHelper.GenerateKeyPair(out privateKey, out publicKey);
+
+            string fingerPrint = CryptoHelper.Hash(publicKey);
+            int issuerId = FiatCoinHelper.GetIssuerId(exchangePayFrom.SelectedValue.ToString());
+            string currencyCode = exchangeCurrency.SelectedValue.ToString();
+            var account = new PaymentAccount
+            {
+                Address = FiatCoinHelper.ToAddress(issuerId, fingerPrint),
+                CurrencyCode = currencyCode,
+                Balance = 0.00m,
+                PublicKey = publicKey,
+                PrivateKey = null
+            };
+            // register
+            string requestUri = string.Format("issuer/api/{0}/accounts/register", issuerId);
+            var registerRequest = new RegisterRequest
+            {
+                PaymentAccount = account.Mask()
+            };
+            HttpContent content = new StringContent(JsonHelper.Serialize(registerRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            response.EnsureSuccessStatusCode();
+
+            account.PrivateKey = privateKey;
+            this.m_Wallet.PaymentAccounts.Add(account);
+            return account.Address;
+
+        }
+
+        private decimal GetAccountBalance(string Account)
+        {
+            int issuerId = FiatCoinHelper.GetIssuerId(Account);
+            string requestUri = string.Format("issuer/api/{0}/accounts/get", issuerId);
+            var getRequest = new GetAccountRequest
+            {
+                Address = Account
+            };
+            HttpContent content = new StringContent(JsonHelper.Serialize(getRequest));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
+            decimal balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
+            return balance;
+        }
     }
 }

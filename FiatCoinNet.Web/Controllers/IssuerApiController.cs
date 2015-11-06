@@ -264,12 +264,13 @@ namespace FiatCoinNetWeb.Controllers
 
                 var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(srcIsserId, request.PaymentTransaction.Source);
                 var balance = FiatCoinHelper.CalculateBalance(transactions, request.PaymentTransaction.Source);
-
-                if (request.PaymentTransaction.Amount > balance)
-                {
-                    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
-                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
-                }
+                
+                // Validate before send to server, if enable would block exchange function
+                //if (request.PaymentTransaction.Amount > balance)
+                //{
+                //    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
+                //    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
+                //}
             }
             else if (baseReq is FundRequest)
             {

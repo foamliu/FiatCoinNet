@@ -15,6 +15,7 @@
     <s:String x:Key="TABITEM_ADDRESSES">账户</s:String>
     <s:String x:Key="TABITEM_PAY">转账</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">交易记录</s:String>
+    <s:String x:Key="TABITEM_EXCHANGE">汇率兑换</s:String>
 
     <s:String x:Key="LABEL_ISSUER">开户行</s:String>
     <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>
@@ -43,5 +44,13 @@
     <s:String x:Key="GRID_MEMODATA">附言</s:String>
     <s:String x:Key="GRID_TRANSACTIONID">交易号</s:String>
 
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYFROM">原账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYTO">新账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_ACCOUNTCURRENCY">账户币种:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGECURRENCY">兑换币种:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATE">实时汇率:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATEURI">实时汇率由Fixer.io提供</s:String>
+    <s:String x:Key="BTN_EXCHANGE">兑换</s:String>
+    
 
 </ResourceDictionary>

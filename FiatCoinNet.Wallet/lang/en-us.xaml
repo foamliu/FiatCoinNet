@@ -15,6 +15,7 @@
     <s:String x:Key="TABITEM_ADDRESSES">Addresses</s:String>
     <s:String x:Key="TABITEM_PAY">Pay</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">Transactions</s:String>
+    <s:String x:Key="TABITEM_EXCHANGE">Exchange</s:String>
 
     <s:String x:Key="LABEL_ISSUER">Issuer</s:String>
     <s:String x:Key="LABEL_CURRENCY">Currency Code</s:String>
@@ -43,5 +44,12 @@
     <s:String x:Key="GRID_MEMODATA">MemoData</s:String>
     <s:String x:Key="GRID_TRANSACTIONID">TransactionId</s:String>
 
-
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYFROM">OldAccount</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYTO">NewAccount</s:String>
+    <s:String x:Key="TEXTBLOCK_ACCOUNTCURRENCY">Currency Code</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGECURRENCY">Exchange Code</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATE">Latest Exchange rate</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATEURI">Powered by Fixer.io</s:String>
+    <s:String x:Key="BTN_EXCHANGE">Exchange</s:String>
+    
 </ResourceDictionary>

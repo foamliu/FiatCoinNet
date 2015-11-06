@@ -15,7 +15,7 @@ namespace FiatCoinNetWeb.Controllers
         private static readonly List<HigherLevelBlock> s_Blocks;
         private static readonly List<Tuple<long, string>> s_Hashes;
         private static long s_Period = 0;
-        private string s_hashPrevBlock = "";
+        private static string s_hashPrevBlock = "";
 
         public static List<Issuer> CertifiedIssuers { get; set; }
 
@@ -148,6 +148,7 @@ namespace FiatCoinNetWeb.Controllers
             highLevelBlock.Period = block.Period;
             highLevelBlock.TransactionSet = block.TransactionSet;
             highLevelBlock.Signature = block.Signature;
+            highLevelBlock.hashPrevBlock = block.hashPrevBlock;
             s_Blocks.Add(highLevelBlock);
         }
 
