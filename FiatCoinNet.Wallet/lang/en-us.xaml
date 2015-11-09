@@ -14,11 +14,22 @@
     <s:String x:Key="MENUITEM_ABOUT">About</s:String>
     <s:String x:Key="MENUITEM_DELETE">Delete</s:String>
 
+    <s:String x:Key="TABITEM_OVERVIEW">Overview</s:String>
+    <s:String x:Key="TABITEM_SEND">Send</s:String>
+    <s:String x:Key="TABITEM_RECEIVE">Receive</s:String>
     <s:String x:Key="TABITEM_ADDRESSES">Addresses</s:String>
     <s:String x:Key="TABITEM_PAY">Pay</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">Transactions</s:String>
     <s:String x:Key="TABITEM_EXCHANGE">Exchange</s:String>
 
+    <s:String x:Key="LABEL_BALANCE">Balance</s:String>
+    <s:String x:Key="LABEL_BALANCEAVAIL">Balance available:</s:String>
+    <s:String x:Key="LABEL_BALANCENOTAVIAL">Balance await:</s:String>
+    <s:String x:Key="LABEL_BALANCEAMOUNT">Amount:</s:String>
+    <s:String x:Key="LABEL_RECENTTRANSACTION">Recent Transaction record:</s:String>
+
+    <s:String x:Key="LABEL_TRANSACTIONFEE">Transaction Fee:</s:String>
+    
     <s:String x:Key="LABEL_ISSUER">Issuer</s:String>
     <s:String x:Key="LABEL_CURRENCY">Currency Code</s:String>
     <s:String x:Key="BTN_NEWADDRESS">New Address</s:String>

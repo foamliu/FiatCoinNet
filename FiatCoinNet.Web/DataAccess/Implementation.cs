@@ -33,11 +33,9 @@ namespace FiatCoinNetWeb.DataAccess
         {
             var result = QueryStoreProcedure("AddLowerLevelBlock", new Dictionary<string, object>
                                                         {
-                                                            {"@magicNo", newHigherLevelBlock.magicNo},
                                                             {"@blockSize", newHigherLevelBlock.blockSize },
                                                             {"@blockHeader", newHigherLevelBlock.blockHeader },
-                                                            {"@transactionCounter", newHigherLevelBlock.TransactionCounter },
-                                                            {"@transactions", newHigherLevelBlock.TransactionSet },
+                                                            {"@LowerLevelBlockSet", newHigherLevelBlock.LowerLevelBlockSet },
                                                             {"@period", newHigherLevelBlock.Period },
                                                             {"@hash", newHigherLevelBlock.Hash },
                                                             {"@signature", newHigherLevelBlock.Signature },
@@ -54,7 +52,6 @@ namespace FiatCoinNetWeb.DataAccess
         {
             var result = QueryStoreProcedure("AddLowerLevelBlock", new Dictionary<string, object>
                                                         {
-                                                            {"@magicNo", newLowerLevelBlock.magicNo},
                                                             {"@blockSize", newLowerLevelBlock.blockSize },
                                                             {"@blockHeader", newLowerLevelBlock.blockHeader },
                                                             {"@transactionCounter", newLowerLevelBlock.TransactionCounter },

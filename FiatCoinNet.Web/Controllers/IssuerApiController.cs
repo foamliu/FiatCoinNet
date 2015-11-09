@@ -168,7 +168,7 @@ namespace FiatCoinNetWeb.Controllers
             List<LowerLevelBlock> blockList = new List<LowerLevelBlock>();
             LowerLevelBlock block = new LowerLevelBlock();
             
-            block.hashPrevBlock = GetPreviousTransactionHash();
+            block.blockHeader.hashPrevBlock = GetPreviousTransactionHash();
             block.Hash = CryptoHelper.Hash(JsonHelper.Serialize(transaction));
             block.Period = 0;
 

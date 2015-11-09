@@ -14,10 +14,21 @@
     <s:String x:Key="MENUITEM_ABOUT">关于</s:String>
     <s:String x:Key="MENUITEM_DELETE">删除</s:String>
 
+    <s:String x:Key="TABITEM_OVERVIEW">概况</s:String>
+    <s:String x:Key="TABITEM_SEND">发送</s:String>
+    <s:String x:Key="TABITEM_RECEIVE">接收</s:String>
     <s:String x:Key="TABITEM_ADDRESSES">账户</s:String>
     <s:String x:Key="TABITEM_PAY">转账</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">交易记录</s:String>
     <s:String x:Key="TABITEM_EXCHANGE">汇率兑换</s:String>
+
+    <s:String x:Key="LABEL_BALANCE">余额:</s:String>
+    <s:String x:Key="LABEL_BALANCEAVAIL">可使用的余额:</s:String>
+    <s:String x:Key="LABEL_BALANCENOTAVIAL">等待中的余额:</s:String>
+    <s:String x:Key="LABEL_BALANCEAMOUNT">总额:</s:String>
+    <s:String x:Key="LABEL_RECENTTRANSACTION">最近的交易记录:</s:String>
+
+    <s:String x:Key="LABEL_TRANSACTIONFEE">交易费用:</s:String>
 
     <s:String x:Key="LABEL_ISSUER">开户行</s:String>
     <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>

@@ -63,12 +63,14 @@ namespace FiatCoinNet.Common
         public static HigherLevelBlock CreateHigherLevelBlock(long period, string hashPrev, List<PaymentTransaction> txset, string privateKey)
         {
             string hash = CryptoHelper.Hash(hashPrev + JsonHelper.Serialize(txset));
-
+            List<LowerLevelBlock> lowerLevelBlockSet = new List<LowerLevelBlock>();
+            LowerLevelBlock lowerLevelBlock = new LowerLevelBlock(txset);
+            lowerLevelBlockSet.Add(lowerLevelBlock);
             return new HigherLevelBlock
             {
                 Period = period,
                 Hash = hash,
-                TransactionSet = txset,
+                LowerLevelBlockSet = lowerLevelBlockSet,
                 Signature = CryptoHelper.Sign(privateKey, hash)
             };
         }
@@ -82,7 +84,7 @@ namespace FiatCoinNet.Common
         /// <returns></returns>
         public static bool VerifyHigherLevelBlock(HigherLevelBlock block, string hashPrev, string publicKey)
         {
-            string hash = CryptoHelper.Hash(hashPrev + JsonHelper.Serialize(block.TransactionSet));
+            string hash = CryptoHelper.Hash(hashPrev + JsonHelper.Serialize(block.LowerLevelBlockSet[0].TransactionSet));
 
             if (block.Hash == hash)
             {

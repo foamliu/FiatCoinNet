@@ -12,10 +12,10 @@ namespace FiatCoinNet.Domain
     {
         #region Required Fields
         /// <summary>
-        /// Block version number
+        /// identify the block belongs to which issuer
         /// </summary>
         [DataMember]
-        public int Version { get; set; }
+        public string Issuer { get; set; }
 
         /// <summary>
         /// 256-bit hash of the previous block header
@@ -42,10 +42,10 @@ namespace FiatCoinNet.Domain
         public int Bits { get; set; }
 
         /// <summary>
-        /// 32-bit number (starts at 0)
+        /// Block version number
         /// </summary>
         [DataMember]
-        public int Nonce = 0;
+        public int Version { get; set; }
 
         #endregion
     }

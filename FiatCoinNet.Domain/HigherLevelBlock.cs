@@ -11,7 +11,7 @@ namespace FiatCoinNet.Domain
     public class HigherLevelBlock
     {
         [DataMember]
-        public string magicNo = "0xD9B4BEF9";
+        public string Hash { get; set; }
 
         [DataMember]
         public int blockSize { get; set; }
@@ -20,22 +20,23 @@ namespace FiatCoinNet.Domain
         public BlockHeader blockHeader { get; set; }
 
         [DataMember]
-        public int TransactionCounter { get; set; }
+        public int LowLevelBlockCounter { get; set; }
 
         [DataMember]
-        public List<PaymentTransaction> TransactionSet { get; set; }
+        public List<LowerLevelBlock> LowerLevelBlockSet { get; set; }
 
         //Above are included in bitcoin official doc
-        [DataMember]
-        public string hashPrevBlock { get; set; }
 
         [DataMember]
         public long Period { get; set; }
 
         [DataMember]
-        public string Hash { get; set; }
-
-        [DataMember]
         public string Signature { get; set; }
+
+        public HigherLevelBlock()
+        {
+            LowerLevelBlockSet = new List<LowerLevelBlock>();
+            blockHeader = new BlockHeader();
+        }
     }
 }
