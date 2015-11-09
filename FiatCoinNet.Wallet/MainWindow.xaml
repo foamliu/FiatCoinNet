@@ -67,19 +67,44 @@
                                 <Label x:Name="labelTrasactionFee" Content="0.0001 "/>
                                 <Label x:Name="labelTrasactionFeeUnit" Content="FTC/kB"/>
                             </StackPanel>
-                            
                         </Border>
-                        
                     </Grid>
-                    
-                    
-                    
-
                 </TabItem>
 
                 <TabItem Header="{DynamicResource TABITEM_RECEIVE}" Margin="6,0,-6,0">
-
-
+                    <Grid Margin="10,10,10,50">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200" />
+                            <RowDefinition Height="200" />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{DynamicResource RECEIVE_TEXTBLOCK_NOTE}" TextAlignment="Left" Margin="10"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_LABEL}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="receiveLabel"></TextBox>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_AMOUNT}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="receiveAmount"></TextBox>
+                                <ComboBox Grid.Row="2" Grid.Column="2" Width="50" Margin="10" Name="receiveCurrency" SelectionChanged="receiveCurrency_SelectionChanged"></ComboBox>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_MESSAGE}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Width="300" Margin="10" Name="receiveMessage"></TextBox>
+                            </Grid>
+                            
+                        </Border>
+                        <Border Grid.Row="1" Margin="10,10,10,47" BorderBrush="Black" BorderThickness="1"></Border>
+                    </Grid>
                 </TabItem>
 
                 <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="8,0,-8,0">

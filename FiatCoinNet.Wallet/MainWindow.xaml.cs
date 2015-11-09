@@ -636,5 +636,10 @@ namespace FiatCoinNet.WalletGui
             decimal balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
             return balance;
         }
+
+        private void receiveCurrency_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

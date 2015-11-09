@@ -30,6 +30,11 @@
 
     <s:String x:Key="LABEL_TRANSACTIONFEE">交易费用:</s:String>
 
+    <s:String x:Key="RECEIVE_TEXTBLOCK_NOTE">使用此表单请求付款,所有字段都是可选项:</s:String>
+    <s:String x:Key="RECEIVE_TEXTBLOCK_LABEL">标签:</s:String>
+    <s:String x:Key="RECEIVE_TEXTBLOCK_AMOUNT">总额:</s:String>
+    <s:String x:Key="RECEIVE_TEXTBLOCK_MESSAGE">消息:</s:String>
+
     <s:String x:Key="LABEL_ISSUER">开户行</s:String>
     <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>
     <s:String x:Key="BTN_NEWADDRESS">新建账户</s:String>
