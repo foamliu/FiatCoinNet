@@ -3,6 +3,8 @@
                     xmlns:s="clr-namespace:System;assembly=mscorlib">
 
     <s:String x:Key="WINDOW_TITLE">钱包</s:String>
+    <s:String x:Key="WINDOW_TITLE_ABOUT">关于</s:String>
+    <s:String x:Key="WINDOW_TITLE_SETTINGS">设置</s:String>
     <s:String x:Key="MENU_FILE">文件</s:String>
     <s:String x:Key="MENU_OPERATION">操作</s:String>
     <s:String x:Key="MENU_HELP">帮助</s:String>
@@ -15,6 +17,7 @@
     <s:String x:Key="TABITEM_ADDRESSES">账户</s:String>
     <s:String x:Key="TABITEM_PAY">转账</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">交易记录</s:String>
+    <s:String x:Key="TABITEM_EXCHANGE">汇率兑换</s:String>
 
     <s:String x:Key="LABEL_ISSUER">开户行</s:String>
     <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>
@@ -24,12 +27,41 @@
     <s:String x:Key="DATAGRID_BALANCE">余额</s:String>
     <s:String x:Key="DATAGRID_CURRENCYCODE">货币代码</s:String>
 
-    <s:String x:Key="TEXTBLOCK_PAYFROM">付款账户：</s:String>
-    <s:String x:Key="TEXTBLOCK_PAYTO">收款账户：</s:String>
-    <s:String x:Key="TEXTBLOCK_BALANCE">付款金额：</s:String>
+    <s:String x:Key="TEXTBLOCK_PAYFROM">付款账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_PAYTO">收款账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_BALANCE">付款金额:</s:String>
     <s:String x:Key="TEXTBLOCK_CURRENCYCODE">货币代码</s:String>
+    <s:String x:Key="TEXTBLOCK_MEMODATA">附言:</s:String>
     <s:String x:Key="BTN_PAY">转账</s:String>
 
     <s:String x:Key="LABEL_TYPE">种类</s:String>
+
+    <s:String x:Key="GRID_AMOUNT">金额</s:String>
+    <s:String x:Key="GRID_CURRENCYCODE">货种</s:String>
+    <s:String x:Key="GRID_SOURCE">付款账户</s:String>
+    <s:String x:Key="GRID_DEST">收款账户</s:String>
+    <s:String x:Key="GRID_ISSUERID">付款银行</s:String>
+    <s:String x:Key="GRID_INVOICEID">收据单号</s:String>
+    <s:String x:Key="GRID_REFPAYMENTTRXID">付款交易号</s:String>
+    <s:String x:Key="GRID_MEMODATA">附言</s:String>
+    <s:String x:Key="GRID_TRANSACTIONID">交易号</s:String>
+
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYFROM">原账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYTO">新账户:</s:String>
+    <s:String x:Key="TEXTBLOCK_ACCOUNTCURRENCY">账户币种:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGECURRENCY">兑换币种:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATE">实时汇率:</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATEURI">实时汇率由Fixer.io提供</s:String>
+    <s:String x:Key="BTN_EXCHANGE">兑换</s:String>
+
+    <s:String x:Key="ABOUT_CONTENT0">菲特币钱包 版本 v0.1 (64 位)</s:String>
+    <s:String x:Key="ABOUT_CONTENT1">版权所有 (C) 2009-2015 FiatCoin开发者</s:String>
+    <s:String x:Key="ABOUT_CONTENT2">这是实验性的软件。</s:String>
+
+    <s:String x:Key="SETTING_LANGUAGE">语言设置:</s:String>
+
+
+
+
 
 </ResourceDictionary>

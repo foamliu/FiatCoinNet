@@ -30,6 +30,34 @@ namespace FiatCoinNetWeb.DataAccess
             return trx;
         }
 
+        public static LowerLevelBlock FromRow(this LowerLevelBlock llb, DataRow row)
+        {
+            llb.blockSize = row.GetIntField("BlockSize");
+            llb.blockHeader.Version = row.GetIntField("Version");
+            llb.blockHeader.hashPrevBlock = row.GetStringField("HashPrevBlock");
+            llb.blockHeader.hashMerkleRoot = row.GetStringField("HashMerkleRoot");
+            llb.blockHeader.Time = row.GetIntField("Time");
+            llb.blockHeader.Bits = row.GetIntField("Bits");
+            llb.TransactionCounter = row.GetIntField("TransactionCounter");
+            //TO DO: Finish the code
+            //llb.TransactionSet. = row.Get
+            return llb;
+        }
+        
+        public static HigherLevelBlock FromRow(this HigherLevelBlock hlb, DataRow row)
+        {
+            hlb.blockSize = row.GetIntField("BlockSize");
+            hlb.blockHeader.Version = row.GetIntField("Version");
+            hlb.blockHeader.hashPrevBlock = row.GetStringField("HashPrevBlock");
+            hlb.blockHeader.hashMerkleRoot = row.GetStringField("HashMerkleRoot");
+            hlb.blockHeader.Time = row.GetIntField("Time");
+            hlb.blockHeader.Bits = row.GetIntField("Bits");
+            hlb.TransactionCounter = row.GetIntField("TransactionCounter");
+            //TO DO: Finish the code
+
+            return hlb;
+        }
+
         public static string GetStringField(this DataRow row, string columnName)
         {
             return row[columnName] == DBNull.Value ? null : Convert.ToString(row[columnName]);

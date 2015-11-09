@@ -25,7 +25,7 @@
                 <ColumnDefinition Width="493*"/>
             </Grid.ColumnDefinitions>
             <TabControl Grid.ColumnSpan="3" x:Name="TabControls" SelectionChanged="miTabControl_SelectionChanged">
-                <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="-2,0,2,0">
+                <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="2,0,-2,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -66,9 +66,10 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="{DynamicResource TABITEM_PAY}">
+                <TabItem Header="{DynamicResource TABITEM_PAY}" Margin="4,0,-4,0">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -79,6 +80,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_PAYFROM}" TextAlignment="Right" Margin="10"/>
                         <ComboBox Grid.Row="0" Grid.Column="1" Width="300" Margin="10" Name="payFrom" SelectionChanged="PayFromSelectionChanged"></ComboBox>
@@ -88,11 +90,13 @@
                         <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="payTo"></TextBox>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_BALANCE}" TextAlignment="Right" Margin="10" />
                         <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="payAmount"></TextBox>
-                        <Button Grid.Row="3" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click" Content="{DynamicResource BTN_PAY}"></Button>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_MEMODATA}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="3" Grid.Column="1" Width="300" Margin="10" Name="MemoData"></TextBox>
+                        <Button Grid.Row="4" Grid.Column="1" Name="btnPay" Margin="10" Width ="100" Click="btnPay_Click" Content="{DynamicResource BTN_PAY}"></Button>
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="{DynamicResource TABITEM_TRANSCATIONS}" Margin="2,-2,-2,0">
+                <TabItem Header="{DynamicResource TABITEM_TRANSCATIONS}" Margin="6,0,-6,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -103,12 +107,54 @@
                             <ComboBox x:Name ="comboBoxTransactionType" VerticalAlignment="Center" Width="150" SelectionChanged="TransactionTypeSelectionChanged" />
                         </StackPanel>
                         <ScrollViewer Grid.Row="1">
-                            <DataGrid Name="dataGridTransactions" AutoGenerateColumns="True" >
+                            <DataGrid Name="dataGridTransactions" AutoGenerateColumns="False" >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_AMOUNT}" Binding="{Binding Amount}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_CURRENCYCODE}" Binding="{Binding CurrencyCode}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_SOURCE}" Binding="{Binding Source}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_DEST}" Binding="{Binding Dest}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_ISSUERID}" Binding="{Binding IssuerId}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_INVOICEID}" Binding="{Binding InvoiceID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_REFPAYMENTTRXID}" Binding="{Binding RefPaymentTrxId}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_MEMODATA}" Binding="{Binding MemoData}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="{DynamicResource GRID_TRANSACTIONID}" Binding="{Binding TransactionId}"></DataGridTextColumn>
+                                </DataGrid.Columns>
                             </DataGrid>
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
-
+                <TabItem Header="{DynamicResource TABITEM_EXCHANGE}" Margin="8,0,-8,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_EXCHANGEPAYFROM}" TextAlignment="Right" Margin="10"/>
+                        <ComboBox Grid.Row="0" Grid.Column="1" Width="300" Margin="10" Name="exchangePayFrom" SelectionChanged="exchangePayFromSelectionChanged"></ComboBox>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_EXCHANGEPAYTO}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="exchangePayTo" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_ACCOUNTCURRENCY}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="exchangeAccountCurrency" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_EXCHANGECURRENCY}" TextAlignment="Right" Margin="10" />
+                        <ComboBox Grid.Row="3" Grid.Column="1" Width="300" Margin="10" Name="exchangeCurrency" SelectionChanged="exchangeCurrencySelectionChanged"></ComboBox>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{DynamicResource TEXTBLOCK_EXCHANGERATE}" TextAlignment="Right" Margin="10" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Width="300" Margin="10" Name="exchangeRate" IsReadOnly="True"></TextBox>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{DynamicResource TEXTBLOCK_EXCHANGERATEURI}" TextAlignment="Left" Margin="10"/>
+                        <Button Grid.Row="5" Grid.Column="1" Name="btnExchange" Margin="10" Width ="100" Click="btnExchange_Click" Content="{DynamicResource BTN_EXCHANGE}"></Button>
+                    </Grid>
+                    
+                </TabItem>
             </TabControl>
         </Grid>
 

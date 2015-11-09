@@ -25,6 +25,9 @@ namespace FiatCoinNet.Domain
 
         [DataMember]
         public int IssuerId { get; set; }
+
+        [DataMember]
+        public string PreviousTransactionHash { get; set; }
         #endregion
 
         #region Optional Fields

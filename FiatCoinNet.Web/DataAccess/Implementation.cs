@@ -29,6 +29,49 @@ namespace FiatCoinNetWeb.DataAccess
             return null;
         }
 
+        public HigherLevelBlock AddHigherLevelBlock(HigherLevelBlock newHigherLevelBlock)
+        {
+            var result = QueryStoreProcedure("AddLowerLevelBlock", new Dictionary<string, object>
+                                                        {
+                                                            {"@magicNo", newHigherLevelBlock.magicNo},
+                                                            {"@blockSize", newHigherLevelBlock.blockSize },
+                                                            {"@blockHeader", newHigherLevelBlock.blockHeader },
+                                                            {"@transactionCounter", newHigherLevelBlock.TransactionCounter },
+                                                            {"@transactions", newHigherLevelBlock.TransactionSet },
+                                                            {"@period", newHigherLevelBlock.Period },
+                                                            {"@hash", newHigherLevelBlock.Hash },
+                                                            {"@signature", newHigherLevelBlock.Signature },
+                                                        });
+            if (result.Tables[0].Rows.Count > 0)
+            {
+                var hlb = new HigherLevelBlock().FromRow(result.Tables[0].Rows[0]);
+                return hlb;
+            }
+            return null;
+        }
+
+        public LowerLevelBlock AddLowerLevelBlock(LowerLevelBlock newLowerLevelBlock)
+        {
+            var result = QueryStoreProcedure("AddLowerLevelBlock", new Dictionary<string, object>
+                                                        {
+                                                            {"@magicNo", newLowerLevelBlock.magicNo},
+                                                            {"@blockSize", newLowerLevelBlock.blockSize },
+                                                            {"@blockHeader", newLowerLevelBlock.blockHeader },
+                                                            {"@transactionCounter", newLowerLevelBlock.TransactionCounter },
+                                                            {"@transactions", newLowerLevelBlock.TransactionSet },
+                                                            {"@period", newLowerLevelBlock.Period },
+                                                            {"@hash", newLowerLevelBlock.Hash },
+                                                            {"@signature", newLowerLevelBlock.Signature },
+                                                            {"@signatureToCertifyIssuer", newLowerLevelBlock.SignatureToCertifyIssuer },
+                                                        });
+            if (result.Tables[0].Rows.Count > 0)
+            {
+                var llb = new LowerLevelBlock().FromRow(result.Tables[0].Rows[0]);
+                return llb;
+            }
+            return null;
+        }
+
         public PaymentTransaction AddTransaction(PaymentTransaction newTransaction)
         {
             var result = QueryStoreProcedure("AddTransaction", new Dictionary<string, object>
@@ -87,6 +130,16 @@ namespace FiatCoinNetWeb.DataAccess
                 }
             }
             return list;
+        }
+
+        public HigherLevelBlock GetHigherLevelBlock()
+        {
+            throw new NotImplementedException();
+        }
+
+        public LowerLevelBlock GetLowerLevelBlock()
+        {
+            throw new NotImplementedException();
         }
 
         public List<PaymentTransaction> GetTransactions(int issuerId, string address)

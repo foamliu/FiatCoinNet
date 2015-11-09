@@ -52,6 +52,7 @@ namespace FiatCoinNet.Domain
         /// </summary>
         [DataMember]
         public string PrivateKey { get; set; }
+
         #endregion
 
         public PaymentAccount Mask()

@@ -1,7 +1,6 @@
 ﻿using FiatCoinNet.Common;
 using FiatCoinNet.Domain;
 using FiatCoinNet.Domain.Requests;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +127,8 @@ namespace FiatCoinNetWeb.Controllers
             }
             DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
 
+            CreateLowerLevelBlock(issuerId, request.PaymentTransaction);
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
@@ -161,6 +162,60 @@ namespace FiatCoinNetWeb.Controllers
         }
 
         #region Private Methods
+        private void CreateLowerLevelBlock(int issuerId, PaymentTransaction transaction)
+        {
+            //Construct low level block
+            List<LowerLevelBlock> blockList = new List<LowerLevelBlock>();
+            LowerLevelBlock block = new LowerLevelBlock();
+            
+            block.hashPrevBlock = GetPreviousTransactionHash();
+            block.Hash = CryptoHelper.Hash(JsonHelper.Serialize(transaction));
+            block.Period = 0;
+
+            block.TransactionSet.Add(transaction);
+
+            string privateKey, publicKey; // bank's
+            CryptoHelper.GenerateKeyPair(out privateKey, out publicKey);
+            string issuerPrivateKey, issuerPublicKey; // issuer's
+            CryptoHelper.GenerateKeyPair(out issuerPrivateKey, out issuerPublicKey);
+
+            block.SignatureToCertifyIssuer = CryptoHelper.Sign(privateKey, issuerPublicKey);
+            block.Signature = issuerPrivateKey;
+
+            block.Hash = CryptoHelper.Hash(JsonHelper.Serialize(block));
+
+            blockList.Add(block);
+            s_Blocks.TryAdd((int)issuerId, blockList);
+
+            PostTransactionHash(block);
+
+            //Call highlevel api
+            string requestUri = string.Format("certifier/api/CreateHigherLevelBlock");
+            HttpContent content = new StringContent(JsonHelper.Serialize(block));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = RestApiHelper.HttpClient.PostAsync(requestUri, content).Result;
+            response.EnsureSuccessStatusCode();
+        }
+
+        private  string GetPreviousTransactionHash()
+        {
+            string requestUri = "certifier/api/HashPrevBlock";
+            HttpResponseMessage response = RestApiHelper.HttpClient.GetAsync(requestUri).Result;
+            response.EnsureSuccessStatusCode();
+            string hash = response.Content.ReadAsAsync<string>().Result;
+            return hash;
+        }
+
+        private void PostTransactionHash(LowerLevelBlock block)
+        {
+            string requestUri = string.Format("certifier/api/HashPrevBlock");
+            HttpContent content = new StringContent(JsonHelper.Serialize(block));
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = RestApiHelper.HttpClient.PostAsync(requestUri, content).Result;
+
+            response.EnsureSuccessStatusCode();
+        }
+
         private void Validate(int issuerId, BaseRequest baseReq = null)
         {
             if (baseReq is GetAccountRequest)
@@ -209,12 +264,13 @@ namespace FiatCoinNetWeb.Controllers
 
                 var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(srcIsserId, request.PaymentTransaction.Source);
                 var balance = FiatCoinHelper.CalculateBalance(transactions, request.PaymentTransaction.Source);
-
-                if (request.PaymentTransaction.Amount > balance)
-                {
-                    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
-                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
-                }
+                
+                // Validate before send to server, if enable would block exchange function
+                //if (request.PaymentTransaction.Amount > balance)
+                //{
+                //    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
+                //    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
+                //}
             }
             else if (baseReq is FundRequest)
             {

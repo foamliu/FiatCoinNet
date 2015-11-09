@@ -3,6 +3,8 @@
                     xmlns:s="clr-namespace:System;assembly=mscorlib">
 
     <s:String x:Key="WINDOW_TITLE">Wallet</s:String>
+    <s:String x:Key="WINDOW_TITLE_ABOUT">About</s:String>
+    <s:String x:Key="WINDOW_TITLE_SETTINGS">Settings</s:String>
     <s:String x:Key="MENU_FILE">File</s:String>
     <s:String x:Key="MENU_OPERATION">Operation</s:String>
     <s:String x:Key="MENU_HELP">Help</s:String>
@@ -15,6 +17,7 @@
     <s:String x:Key="TABITEM_ADDRESSES">Addresses</s:String>
     <s:String x:Key="TABITEM_PAY">Pay</s:String>
     <s:String x:Key="TABITEM_TRANSCATIONS">Transactions</s:String>
+    <s:String x:Key="TABITEM_EXCHANGE">Exchange</s:String>
 
     <s:String x:Key="LABEL_ISSUER">Issuer</s:String>
     <s:String x:Key="LABEL_CURRENCY">Currency Code</s:String>
@@ -28,9 +31,33 @@
     <s:String x:Key="TEXTBLOCK_PAYTO">Pay To:</s:String>
     <s:String x:Key="TEXTBLOCK_CURRENCYCODE">Currency Code</s:String>
     <s:String x:Key="TEXTBLOCK_BALANCE">Balance:</s:String>
+    <s:String x:Key="TEXTBLOCK_MEMODATA">MemoData:</s:String>
     <s:String x:Key="BTN_PAY">Pay</s:String>
 
     <s:String x:Key="LABEL_TYPE">Type</s:String>
 
+    <s:String x:Key="GRID_AMOUNT">Amount</s:String>
+    <s:String x:Key="GRID_CURRENCYCODE">CurrentCode</s:String>
+    <s:String x:Key="GRID_SOURCE">Source</s:String>
+    <s:String x:Key="GRID_DEST">Dest</s:String>
+    <s:String x:Key="GRID_ISSUERID">IssuerId</s:String>
+    <s:String x:Key="GRID_INVOICEID">InvoiceId</s:String>
+    <s:String x:Key="GRID_REFPAYMENTTRXID">RefPaymentTrxId</s:String>
+    <s:String x:Key="GRID_MEMODATA">MemoData</s:String>
+    <s:String x:Key="GRID_TRANSACTIONID">TransactionId</s:String>
+
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYFROM">OldAccount</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGEPAYTO">NewAccount</s:String>
+    <s:String x:Key="TEXTBLOCK_ACCOUNTCURRENCY">Currency Code</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGECURRENCY">Exchange Code</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATE">Latest Exchange rate</s:String>
+    <s:String x:Key="TEXTBLOCK_EXCHANGERATEURI">Powered by Fixer.io</s:String>
+    <s:String x:Key="BTN_EXCHANGE">Exchange</s:String>
+
+    <s:String x:Key="ABOUT_CONTENT0">FiatCoin Wallet Version v0.1 (64 bits)</s:String>
+    <s:String x:Key="ABOUT_CONTENT1">Copyright (C) 2009-2015 FiatCoin Developer</s:String>
+    <s:String x:Key="ABOUT_CONTENT2">This is an experimental software</s:String>
+
+    <s:String x:Key="SETTING_LANGUAGE">语言设置:</s:String>
 
 </ResourceDictionary>

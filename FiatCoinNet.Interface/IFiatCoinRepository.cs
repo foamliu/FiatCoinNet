@@ -20,5 +20,13 @@ namespace FiatCoinNet.Interface
         PaymentTransaction AddTransaction(PaymentTransaction newTransaction);
 
         List<PaymentTransaction> GetTransactions(int issuerId, string address);
+
+        LowerLevelBlock AddLowerLevelBlock(LowerLevelBlock newLowerLevelBlock);
+
+        LowerLevelBlock GetLowerLevelBlock();
+
+        HigherLevelBlock AddHigherLevelBlock(HigherLevelBlock newHigherLevelBlock);
+
+        HigherLevelBlock GetHigherLevelBlock();
     }
 }
