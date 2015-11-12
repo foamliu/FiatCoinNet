@@ -183,10 +183,12 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Bank\BankService.cs" />
     <Compile Include="Controllers\BankApiController.cs" />
     <Compile Include="Controllers\BankController.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Issuer\IssuerService.cs" />
     <Compile Include="Controllers\IssuerApiController.cs" />
     <Compile Include="Controllers\IssuerController.cs" />
     <Compile Include="Controllers\PrincipleController.cs" />

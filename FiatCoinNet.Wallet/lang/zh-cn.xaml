@@ -28,12 +28,18 @@
     <s:String x:Key="LABEL_BALANCEAMOUNT">总额:</s:String>
     <s:String x:Key="LABEL_RECENTTRANSACTION">最近的交易记录:</s:String>
 
-    <s:String x:Key="LABEL_TRANSACTIONFEE">交易费用:</s:String>
+    <s:String x:Key="SEND_LABEL_TRANSACTIONFEE">交易费用:</s:String>
+    <s:String x:Key="SEND_BUTTON_SEND">发送</s:String>
+    <s:String x:Key="SEND_BUTTON_CLEARALL">清除所有</s:String>
+    <s:String x:Key="SEND_BUTTON_ADDPAYEE">添加收款人</s:String>
 
     <s:String x:Key="RECEIVE_TEXTBLOCK_NOTE">使用此表单请求付款,所有字段都是可选项:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_LABEL">标签:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_AMOUNT">总额:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_MESSAGE">消息:</s:String>
+    <s:String x:Key="RECEIVE_BUTTON_SHOW">显示</s:String>
+    <s:String x:Key="RECEIVE_BUTTON_REMOVE">移除</s:String>
+    
 
     <s:String x:Key="LABEL_ISSUER">开户行</s:String>
     <s:String x:Key="LABEL_CURRENCY">货币代码</s:String>

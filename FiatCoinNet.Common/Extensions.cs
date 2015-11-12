@@ -15,4 +15,5 @@ namespace FiatCoinNet.Common
             return JsonHelper.Serialize(request);
         }
     }
+    
 }
