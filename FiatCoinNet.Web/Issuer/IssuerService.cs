@@ -32,26 +32,24 @@ namespace FiatCoinNetWeb.Controllers
             string PublicKey = "RUNTMSAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G";
             string PrivateKey = "RUNTMiAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G65oCkARn28CZeMfTC9i84DMlfc7vwSABoRVRmWlaLR4=";
             string SignatureToCertifyIssuer = "";
-            Issuer issuer1 = new Issuer(Id, Name, PublicKey, PrivateKey, SignatureToCertifyIssuer);
+            issuer1 = new Issuer(Id, Name, PublicKey, PrivateKey, SignatureToCertifyIssuer);
 
             Id = 1942;
             Name = "菲特银行南海分行";
             PublicKey = "RUNTMSAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6";
             PrivateKey = "RUNTMiAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6bLAWC+sFREWvj1rfY97K49tosn9eg5CQ9Q3e1i59zgQ=";
             SignatureToCertifyIssuer = "";
-            Issuer issuer2 = new Issuer(Id, Name, PublicKey, PrivateKey, SignatureToCertifyIssuer);
+            issuer2 = new Issuer(Id, Name, PublicKey, PrivateKey, SignatureToCertifyIssuer);
 
         }
 
         public void CreateLowerLevelBlockForIssuer1(object source, ElapsedEventArgs e)
         {
-            //Code here...
             CreateLowerLevelBlockForIssuer1();
         }
 
         public void CreateLowerLevelBlockForIssuer2(object source, ElapsedEventArgs e)
         {
-            //Code here...
             CreateLowerLevelBlockForIssuer2();
         }
 

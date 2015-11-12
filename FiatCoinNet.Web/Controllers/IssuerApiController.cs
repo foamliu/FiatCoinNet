@@ -18,11 +18,12 @@ namespace FiatCoinNetWeb.Controllers
     {
         // TODO: persistence
         //private static readonly ConcurrentDictionary<int, List<LowerLevelBlock>> s_Blocks;
-        public IssuerService issuerService = new IssuerService();
-        public BankApiController bankapi = new BankApiController();
 
-        static IssuerApiController()
+        public BankApiController bankapi;
+
+        public IssuerApiController()
         {
+            bankapi = new BankApiController();
             //s_Blocks = new ConcurrentDictionary<int, List<LowerLevelBlock>>();
 
             //BankApiController.CertifiedIssuers.ForEach(i =>

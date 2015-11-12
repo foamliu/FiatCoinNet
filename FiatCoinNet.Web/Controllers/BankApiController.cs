@@ -18,11 +18,11 @@ namespace FiatCoinNetWeb.Controllers
         //private static long s_Period = 0;
         //public static string s_prevBlockHash = "";
 
-        public BankService bankService = new BankService();
+        public BankService bankService;
 
-        static BankApiController()
+        public BankApiController()
         {
-            
+            bankService = new BankService();
 
             //CertifiedIssuers = new List<Issuer>();
             //var issuer1 = new Issuer

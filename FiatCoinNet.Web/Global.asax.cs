@@ -26,13 +26,13 @@ namespace FiatCoinNetWeb
 
             //Start the backend job for Issuer1
             System.Timers.Timer IssuerTimer1 = new System.Timers.Timer(60000);
-            IssuerTimer1.Elapsed += new System.Timers.ElapsedEventHandler(issuerapi.issuerService.CreateLowerLevelBlockForIssuer1);
+            IssuerTimer1.Elapsed += new System.Timers.ElapsedEventHandler(issuerapi.bankapi.bankService.issuerService.CreateLowerLevelBlockForIssuer1);
             IssuerTimer1.Enabled = true;
             IssuerTimer1.AutoReset = true;
 
             //Start the backend job for Issuer2
             System.Timers.Timer IssuerTimer2 = new System.Timers.Timer(60000);
-            IssuerTimer2.Elapsed += new System.Timers.ElapsedEventHandler(issuerapi.issuerService.CreateLowerLevelBlockForIssuer2);
+            IssuerTimer2.Elapsed += new System.Timers.ElapsedEventHandler(issuerapi.bankapi.bankService.issuerService.CreateLowerLevelBlockForIssuer2);
             IssuerTimer2.Enabled = true;
             IssuerTimer2.AutoReset = true;
 

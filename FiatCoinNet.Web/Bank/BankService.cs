@@ -14,12 +14,16 @@ namespace FiatCoinNetWeb.Controllers
     {
         private const int MAX_LOWERLEVELBLOCK = 100;
         public Bank bank;
+        public IssuerService issuerService;
 
         public BankService()
         {
             string PublicKey = "RUNTMSAAAADcmtiQ8GgWydlQseioV45M+ZfjicIF82yCJrjr4bqJEIsaYeMEw7cH8uArUuE9W9cx8pskNIP6AZB23DunLsHs";
             string PrivateKey = "RUNTMiAAAADcmtiQ8GgWydlQseioV45M+ZfjicIF82yCJrjr4bqJEIsaYeMEw7cH8uArUuE9W9cx8pskNIP6AZB23DunLsHsYivlMzw31CW+v2G9TKcuNtHp14Y9GRPaRhiJN/eUQcM=";
-            Bank bank = new Bank(PublicKey, PrivateKey);
+            bank = new Bank(PublicKey, PrivateKey);
+            issuerService = new IssuerService();
+            bank.CertifiedIssuers.Add(issuerService.issuer1);
+            bank.CertifiedIssuers.Add(issuerService.issuer2);
         }
 
         public void CreateHigherLevelBlock(object source, ElapsedEventArgs e)
