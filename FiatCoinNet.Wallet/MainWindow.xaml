@@ -25,7 +25,103 @@
                 <ColumnDefinition Width="493*"/>
             </Grid.ColumnDefinitions>
             <TabControl Grid.ColumnSpan="3" x:Name="TabControls" SelectionChanged="miTabControl_SelectionChanged">
-                <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="2,0,-2,0">
+                <TabItem Header="{DynamicResource TABITEM_OVERVIEW}" Margin="2,0,-2,0">
+                    <Grid >
+                        <Grid HorizontalAlignment="Left" Height="200" Margin="10,10,0,0" VerticalAlignment="Top" Width="192">
+                            <Label x:Name="label" Content="{DynamicResource LABEL_BALANCE}" HorizontalAlignment="Left" Margin="10,23,0,0" VerticalAlignment="Top"/>
+                            <StackPanel Orientation="Horizontal" Margin="10,50,10,120">
+                                <Label x:Name="labelBalanceAva"  Content="{DynamicResource LABEL_BALANCEAVAIL}"></Label>
+                                <Label x:Name="labelBalanceAvailable"></Label>
+                                <Label x:Name="labelBalanceFTC1">FTC</Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10,75,10,95">
+                                <Label x:Name="labelBalanceNotAva"  Content="{DynamicResource LABEL_BALANCENOTAVIAL}"></Label>
+                                <Label x:Name="labelBalanceNotAvailable">0</Label>
+                                <Label x:Name="labelBalanceFTC2">FTC</Label>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10,110,10,60">
+                                <Label x:Name="labelBalanceAmo"  Content="{DynamicResource LABEL_BALANCEAMOUNT}"></Label>
+                                <Label x:Name="labelBalanceAmount"></Label>
+                                <Label x:Name="labelBalanceFTC3">FTC</Label>
+                            </StackPanel>
+                            
+                        </Grid>
+                        <Grid HorizontalAlignment="Left" Height="403" Margin="207,10,0,0" VerticalAlignment="Top" Width="569">
+                            <Label x:Name="labelRecent" Content="{DynamicResource LABEL_RECENTTRANSACTION}"></Label>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource TABITEM_SEND}" Margin="4,0,-4,0">
+                    <Grid Margin="10,10,10,30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="250" />
+                            <RowDefinition Height="100" />
+                            <RowDefinition Height="30"  />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="1">
+
+                        </Border>
+                        <Border Grid.Row="1" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="1">
+                            <StackPanel Orientation="Horizontal" >
+                                <Label x:Name="labelTrasacFee" Content="{DynamicResource SEND_LABEL_TRANSACTIONFEE}"/>
+                                <Label x:Name="labelTrasactionFee" Content="0.0001 "/>
+                                <Label x:Name="labelTrasactionFeeUnit" Content="FTC/kB"/>
+                            </StackPanel>
+                        </Border>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2" >
+                            <Button Click="btnSend_Click" Content="{DynamicResource SEND_BUTTON_SEND}" Margin="10,0,10,0"></Button>
+                            <Button Click="btnClearAll_Click" Content="{DynamicResource SEND_BUTTON_CLEARALL}" Margin="10,0,10,0"></Button>
+                            <Button Click="btnAddPayee_Click" Content="{DynamicResource SEND_BUTTON_ADDPAYEE}" Margin="10,0,10,0"></Button>
+                            <Label x:Name="labelSendBalanceAmo"  Content="{DynamicResource LABEL_BALANCE}" HorizontalAlignment="Right" ></Label>
+                            <Label x:Name="labelSendBalanceAmount" HorizontalAlignment="Right"></Label>
+                            <Label x:Name="labelSendBalanceFTC3" HorizontalAlignment="Right" >FTC</Label>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource TABITEM_RECEIVE}" Margin="6,0,-6,0">
+                    <Grid Margin="10,10,10,30">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="200" />
+                            <RowDefinition Height="150" />
+                            <RowDefinition Height="30"  />
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{DynamicResource RECEIVE_TEXTBLOCK_NOTE}" TextAlignment="Left" Margin="10"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_LABEL}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Width="300" Margin="10" Name="receiveLabel"></TextBox>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_AMOUNT}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Width="300" Margin="10" Name="receiveAmount"></TextBox>
+                                <ComboBox Grid.Row="2" Grid.Column="2" Width="50" Margin="10" Name="receiveCurrency" SelectionChanged="receiveCurrency_SelectionChanged"></ComboBox>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="{DynamicResource RECEIVE_TEXTBLOCK_MESSAGE}" TextAlignment="Left" Margin="10"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Width="300" Margin="10" Name="receiveMessage"></TextBox>
+                            </Grid>
+                            
+                        </Border>
+                        <Border Grid.Row="1" Margin="10,10,10,10" BorderBrush="Black" BorderThickness="1"></Border>
+                        <StackPanel Orientation="Horizontal" Grid.Row="2">
+                            <Button Click="btnShow_Click" Content="{DynamicResource RECEIVE_BUTTON_SHOW}" Margin="10,0,10,0"></Button>
+                            <Button Click="btnRemove_Click" Content="{DynamicResource RECEIVE_BUTTON_REMOVE}" Margin="10,0,10,0"></Button>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="{DynamicResource TABITEM_ADDRESSES}" Margin="8,0,-8,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30" />
@@ -66,7 +162,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="{DynamicResource TABITEM_PAY}" Margin="4,0,-4,0">
+                <TabItem Header="{DynamicResource TABITEM_PAY}" Margin="10,0,-10,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -96,7 +192,7 @@
                     </Grid>
                 </TabItem>
 
-                <TabItem Header="{DynamicResource TABITEM_TRANSCATIONS}" Margin="6,0,-6,0">
+                <TabItem Header="{DynamicResource TABITEM_TRANSCATIONS}" Margin="12,0,-12,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -123,7 +219,7 @@
                         </ScrollViewer>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{DynamicResource TABITEM_EXCHANGE}" Margin="8,0,-8,0">
+                <TabItem Header="{DynamicResource TABITEM_EXCHANGE}" Margin="14,0,-14,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -153,7 +249,7 @@
                         <TextBlock Grid.Row="4" Grid.Column="2" Text="{DynamicResource TEXTBLOCK_EXCHANGERATEURI}" TextAlignment="Left" Margin="10"/>
                         <Button Grid.Row="5" Grid.Column="1" Name="btnExchange" Margin="10" Width ="100" Click="btnExchange_Click" Content="{DynamicResource BTN_EXCHANGE}"></Button>
                     </Grid>
-                    
+
                 </TabItem>
             </TabControl>
         </Grid>

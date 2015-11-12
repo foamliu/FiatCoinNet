@@ -125,7 +125,7 @@ namespace FiatCoinNet.WalletGui
             response = HttpClient.PostAsync(requestUri, content).Result;
             response.EnsureSuccessStatusCode();
 
-            GetBalances();
+            GetAccountBalances();
             this.UpdateAddressDataGrid();
             this.Save();
         }
@@ -172,7 +172,7 @@ namespace FiatCoinNet.WalletGui
                 switch (tabItem)
                 {
                     case "Addresses":
-                        GetBalances();
+                        GetAccountBalances();
                         this.UpdateAddressDataGrid();
                         comboBoxIssuer.SelectedIndex = 0;
                         comboBoxCurrencyCode.SelectedValue = "USD";
@@ -375,7 +375,8 @@ namespace FiatCoinNet.WalletGui
             if (File.Exists(FileName))
             {
                 this.m_Wallet = JsonHelper.Deserialize<Wallet>(File.ReadAllText(FileName));
-                GetBalances();
+                GetAccountBalances();
+                GetTotalBalances();
             }
             else
             {
@@ -384,7 +385,7 @@ namespace FiatCoinNet.WalletGui
             UpdateAddressDataGrid();
         }
 
-        private void GetBalances()
+        private void GetAccountBalances()
         {
             foreach (var paymentAccount in m_Wallet.PaymentAccounts)
             {
@@ -400,6 +401,20 @@ namespace FiatCoinNet.WalletGui
                 //response.EnsureSuccessStatusCode();
                 paymentAccount.Balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
             }
+        }
+
+        private void GetTotalBalances()
+        {
+            decimal result = 0;
+            foreach (var paymentAccount in m_Wallet.PaymentAccounts)
+            {
+                result += paymentAccount.Balance;
+            }
+            labelBalanceAvailable.Content = result;
+            //TODO: work on balance not available
+            labelBalanceNotAvailable.Content = 0;
+            labelBalanceAmount.Content = result;
+            labelSendBalanceAmount.Content = result;
         }
 
         private void Save()
@@ -418,7 +433,7 @@ namespace FiatCoinNet.WalletGui
                 foreach (var block in transactions)
                 {
                     PaymentTransaction trans = new PaymentTransaction();
-                    trans = block.TransactionSet[0];
+                    trans = block.LowerLevelBlockSet[0].TransactionSet[0];
                     result.Add(trans);
                 }
             }
@@ -548,7 +563,7 @@ namespace FiatCoinNet.WalletGui
             MessageBox.Show("兑换成功");
             exchangePayTo.Text = destAccount;
 
-            GetBalances();
+            GetAccountBalances();
             this.UpdateAddressDataGrid();
             this.Save();
         }
@@ -621,6 +636,36 @@ namespace FiatCoinNet.WalletGui
             HttpResponseMessage response = HttpClient.PostAsync(requestUri, content).Result;
             decimal balance = response.Content.ReadAsAsync<PaymentAccount>().Result.Balance;
             return balance;
+        }
+
+        private void receiveCurrency_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void btnSend_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnClearAll_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddPayee_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnShow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
