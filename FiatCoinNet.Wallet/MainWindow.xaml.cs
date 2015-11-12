@@ -414,6 +414,7 @@ namespace FiatCoinNet.WalletGui
             //TODO: work on balance not available
             labelBalanceNotAvailable.Content = 0;
             labelBalanceAmount.Content = result;
+            labelSendBalanceAmount.Content = result;
         }
 
         private void Save()
@@ -640,6 +641,31 @@ namespace FiatCoinNet.WalletGui
         private void receiveCurrency_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void btnSend_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnClearAll_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAddPayee_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnShow_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

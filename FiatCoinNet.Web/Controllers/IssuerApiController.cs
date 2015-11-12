@@ -17,16 +17,19 @@ namespace FiatCoinNetWeb.Controllers
     public class IssuerApiController : ApiController
     {
         // TODO: persistence
-        private static readonly ConcurrentDictionary<int, List<LowerLevelBlock>> s_Blocks;
+        //private static readonly ConcurrentDictionary<int, List<LowerLevelBlock>> s_Blocks;
 
-        static IssuerApiController()
+        public BankApiController bankapi;
+
+        public IssuerApiController()
         {
-            s_Blocks = new ConcurrentDictionary<int, List<LowerLevelBlock>>();
+            bankapi = new BankApiController();
+            //s_Blocks = new ConcurrentDictionary<int, List<LowerLevelBlock>>();
 
-            BankApiController.CertifiedIssuers.ForEach(i =>
-            {
-                s_Blocks[i.Id] = new List<LowerLevelBlock>();
-            });
+            //BankApiController.CertifiedIssuers.ForEach(i =>
+            //{
+            //    s_Blocks[i.Id] = new List<LowerLevelBlock>();
+            //});
         }
 
 
@@ -58,7 +61,7 @@ namespace FiatCoinNetWeb.Controllers
 
             var account = DataAccess.DataAccessor.FiatCoinRepository.GetAccount(issuerId, request.Address);
             var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(issuerId, request.Address);
-            account.Balance = FiatCoinHelper.CalculateBalance(transactions, request.Address);
+            account.Balance = CalculateBalance(transactions, request.Address);
             return Request.CreateResponse(HttpStatusCode.OK, account);
         }
 
@@ -118,7 +121,7 @@ namespace FiatCoinNetWeb.Controllers
                 {
                     PaymentTransaction = request.PaymentTransaction
                 };
-                var me = BankApiController.CertifiedIssuers.FirstOrDefault<Issuer>(i => i.Id == issuerId);
+                var me = bankapi.bankService.bank.CertifiedIssuers.FirstOrDefault<Issuer>(i => i.Id == issuerId);
                 payRequest.Signature = CryptoHelper.Sign(me.PrivateKey, payRequest.ToMessage());
                 HttpContent content = new StringContent(JsonHelper.Serialize(payRequest));
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -127,7 +130,7 @@ namespace FiatCoinNetWeb.Controllers
             }
             DataAccess.DataAccessor.FiatCoinRepository.AddTransaction(request.PaymentTransaction);
 
-            CreateLowerLevelBlock(issuerId, request.PaymentTransaction);
+            //CreateLowerLevelBlock(issuerId, request.PaymentTransaction);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
@@ -162,58 +165,11 @@ namespace FiatCoinNetWeb.Controllers
         }
 
         #region Private Methods
-        private void CreateLowerLevelBlock(int issuerId, PaymentTransaction transaction)
+        private static decimal CalculateBalance(List<PaymentTransaction> journal, string address)
         {
-            //Construct low level block
-            List<LowerLevelBlock> blockList = new List<LowerLevelBlock>();
-            LowerLevelBlock block = new LowerLevelBlock();
-            
-            block.blockHeader.hashPrevBlock = GetPreviousTransactionHash();
-            block.Hash = CryptoHelper.Hash(JsonHelper.Serialize(transaction));
-            block.Period = 0;
-
-            block.TransactionSet.Add(transaction);
-
-            string privateKey, publicKey; // bank's
-            CryptoHelper.GenerateKeyPair(out privateKey, out publicKey);
-            string issuerPrivateKey, issuerPublicKey; // issuer's
-            CryptoHelper.GenerateKeyPair(out issuerPrivateKey, out issuerPublicKey);
-
-            block.SignatureToCertifyIssuer = CryptoHelper.Sign(privateKey, issuerPublicKey);
-            block.Signature = issuerPrivateKey;
-
-            block.Hash = CryptoHelper.Hash(JsonHelper.Serialize(block));
-
-            blockList.Add(block);
-            s_Blocks.TryAdd((int)issuerId, blockList);
-
-            PostTransactionHash(block);
-
-            //Call highlevel api
-            string requestUri = string.Format("certifier/api/CreateHigherLevelBlock");
-            HttpContent content = new StringContent(JsonHelper.Serialize(block));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = RestApiHelper.HttpClient.PostAsync(requestUri, content).Result;
-            response.EnsureSuccessStatusCode();
-        }
-
-        private  string GetPreviousTransactionHash()
-        {
-            string requestUri = "certifier/api/HashPrevBlock";
-            HttpResponseMessage response = RestApiHelper.HttpClient.GetAsync(requestUri).Result;
-            response.EnsureSuccessStatusCode();
-            string hash = response.Content.ReadAsAsync<string>().Result;
-            return hash;
-        }
-
-        private void PostTransactionHash(LowerLevelBlock block)
-        {
-            string requestUri = string.Format("certifier/api/HashPrevBlock");
-            HttpContent content = new StringContent(JsonHelper.Serialize(block));
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            HttpResponseMessage response = RestApiHelper.HttpClient.PostAsync(requestUri, content).Result;
-
-            response.EnsureSuccessStatusCode();
+            return
+                journal.Where(trx => trx.Dest == address).Sum(trx => trx.Amount) -
+                journal.Where(trx => trx.Source == address).Sum(trx => trx.Amount);
         }
 
         private void Validate(int issuerId, BaseRequest baseReq = null)
@@ -263,14 +219,13 @@ namespace FiatCoinNetWeb.Controllers
                 ValidateRequestor(request, account);
 
                 var transactions = DataAccess.DataAccessor.FiatCoinRepository.GetTransactions(srcIsserId, request.PaymentTransaction.Source);
-                var balance = FiatCoinHelper.CalculateBalance(transactions, request.PaymentTransaction.Source);
+                var balance = CalculateBalance(transactions, request.PaymentTransaction.Source);
                 
-                // Validate before send to server, if enable would block exchange function
-                //if (request.PaymentTransaction.Amount > balance)
-                //{
-                //    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
-                //    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
-                //}
+                if (request.PaymentTransaction.Amount > balance)
+                {
+                    var message = string.Format("Insufficient funds, balance = {0}, to pay = {1}", balance, request.PaymentTransaction.Amount);
+                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, message));
+                }
             }
             else if (baseReq is FundRequest)
             {
@@ -300,6 +255,8 @@ namespace FiatCoinNetWeb.Controllers
                 throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Unauthorized, message));
             }
         }
+
+        
         #endregion
     }
 }

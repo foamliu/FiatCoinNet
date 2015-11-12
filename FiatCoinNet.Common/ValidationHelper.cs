@@ -5,6 +5,7 @@ namespace FiatCoinNet.Common
 {
     public static class ValidationHelper
     {
+        
         public static bool Validate(BaseRequest request, string publicKey)
         {
             string signature = request.Signature;
@@ -13,5 +14,6 @@ namespace FiatCoinNet.Common
             request.Signature = signature;
             return CryptoHelper.Verify(publicKey, message, signature);
         }
+        
     }
 }

@@ -31,6 +31,7 @@ namespace FiatCoinNet.Common
             fingerprint = address.Substring(8);
         }
 
+        
         public static decimal CalculateBalance(List<PaymentTransaction> journal, string address)
         {
             return
@@ -142,6 +143,7 @@ namespace FiatCoinNet.Common
             return false;
         }
 
+    
         public static bool CheckNotDoubleSpent()
         {
             return true;

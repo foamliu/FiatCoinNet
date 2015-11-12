@@ -8,15 +8,9 @@ using System.Runtime.Serialization;
 namespace FiatCoinNet.Domain
 {
     [DataContract]
-    public class BlockHeader
+    public class HigherLevelBlockHeader
     {
         #region Required Fields
-        /// <summary>
-        /// identify the block belongs to which issuer
-        /// </summary>
-        [DataMember]
-        public string Issuer { get; set; }
-
         /// <summary>
         /// 256-bit hash of the previous block header
         /// </summary>
@@ -33,7 +27,7 @@ namespace FiatCoinNet.Domain
         /// Current timestamp as seconds since 1970-01-01T00:00 UTC
         /// </summary>
         [DataMember]
-        public int Time { get; set; }
+        public double Time { get; set; }
 
         /// <summary>
         /// Current target in compact format

@@ -29,11 +29,16 @@
     <s:String x:Key="LABEL_RECENTTRANSACTION">Recent Transaction record:</s:String>
 
     <s:String x:Key="LABEL_TRANSACTIONFEE">Transaction Fee:</s:String>
+    <s:String x:Key="SEND_BUTTON_SEND">Send</s:String>
+    <s:String x:Key="SEND_BUTTON_CLEARALL">Clear All</s:String>
+    <s:String x:Key="SEND_BUTTON_ADDPAYEE">Add Payee</s:String>
 
     <s:String x:Key="RECEIVE_TEXTBLOCK_NOTE">Payment:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_LABEL">Label:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_AMOUNT">Amount:</s:String>
     <s:String x:Key="RECEIVE_TEXTBLOCK_MESSAGE">Message:</s:String>
+    <s:String x:Key="RECEIVE_BUTTON_SHOW">Show</s:String>
+    <s:String x:Key="RECEIVE_BUTTON_REMOVE">Remove</s:String>
 
     <s:String x:Key="LABEL_ISSUER">Issuer</s:String>
     <s:String x:Key="LABEL_CURRENCY">Currency Code</s:String>

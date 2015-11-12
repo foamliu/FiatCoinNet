@@ -20,7 +20,7 @@ namespace FiatCoinNet.Domain
         public int blockSize { get; set; }
 
         [DataMember]
-        public BlockHeader blockHeader { get; set; }
+        public LowerLevelBlockHeader blockHeader { get; set; }
 
         [DataMember]
         public int TransactionCounter { get; set; }
@@ -42,13 +42,13 @@ namespace FiatCoinNet.Domain
         public LowerLevelBlock()
         {
             TransactionSet = new List<PaymentTransaction>();
-            blockHeader = new BlockHeader();
+            blockHeader = new LowerLevelBlockHeader();
         }
 
         public LowerLevelBlock(List<PaymentTransaction> transactionSet)
         {
             TransactionSet = transactionSet;
-            blockHeader = new BlockHeader();
+            blockHeader = new LowerLevelBlockHeader();
         }
     }
 }

@@ -11,52 +11,48 @@ namespace FiatCoinNetWeb.Controllers
 {
     public class BankApiController : ApiController
     {
-        private static readonly Bank s_Bank;
-        private static readonly List<HigherLevelBlock> s_Blocks;
-        private static readonly List<Tuple<long, string>> s_Hashes;
-        private static long s_Period = 0;
-        private static string s_hashPrevBlock = "";
-        private static string s_prevBlockHash = "";
+        //private static readonly Bank s_Bank;
+        //private static readonly List<HigherLevelBlock> s_Blocks;
+        //private static readonly List<Tuple<long, string>> s_Hashes;
+        //public static readonly Queue<LowerLevelBlock> s_LowerLevelBlockPool;
+        //private static long s_Period = 0;
+        //public static string s_prevBlockHash = "";
 
-        public static List<Issuer> CertifiedIssuers { get; set; }
+        public BankService bankService;
 
-        static BankApiController()
+        public BankApiController()
         {
-            s_Bank = new Bank
-            {
-                PublicKey = "RUNTMSAAAADcmtiQ8GgWydlQseioV45M+ZfjicIF82yCJrjr4bqJEIsaYeMEw7cH8uArUuE9W9cx8pskNIP6AZB23DunLsHs",
-                PrivateKey = "RUNTMiAAAADcmtiQ8GgWydlQseioV45M+ZfjicIF82yCJrjr4bqJEIsaYeMEw7cH8uArUuE9W9cx8pskNIP6AZB23DunLsHsYivlMzw31CW+v2G9TKcuNtHp14Y9GRPaRhiJN/eUQcM="
-            };
+            bankService = new BankService();
 
-            CertifiedIssuers = new List<Issuer>();
-            var issuer1 = new Issuer
-            {
-                Id = 1010,
-                Name = "菲特银行北海分行",
-                PublicKey = "RUNTMSAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G",
-                PrivateKey = "RUNTMiAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G65oCkARn28CZeMfTC9i84DMlfc7vwSABoRVRmWlaLR4=",
-                SignatureToCertifyIssuer = "",
-                PaymentAccounts = new List<PaymentAccount>()
-            };
-            issuer1.SignatureToCertifyIssuer = CryptoHelper.Sign(s_Bank.PrivateKey, issuer1.PublicKey);
-            CertifiedIssuers.Add(issuer1);
+            //CertifiedIssuers = new List<Issuer>();
+            //var issuer1 = new Issuer
+            //{
+            //    Id = 1010,
+            //    Name = "菲特银行北海分行",
+            //    PublicKey = "RUNTMSAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G",
+            //    PrivateKey = "RUNTMiAAAAB9kGHlnnUY0FGYBCzd7WdcZifnx+wfPVswjSrxYqAw7sC92RYMLB2iJA9f7utNbhX7WGUgzWwKd+Y4wscGA98G65oCkARn28CZeMfTC9i84DMlfc7vwSABoRVRmWlaLR4=",
+            //    SignatureToCertifyIssuer = "",
+            //    PaymentAccounts = new List<PaymentAccount>()
+            //};
+            //issuer1.SignatureToCertifyIssuer = CryptoHelper.Sign(s_Bank.PrivateKey, issuer1.PublicKey);
+            //CertifiedIssuers.Add(issuer1);
 
-            var issuer2 = new Issuer
-            {
-                Id = 1942,
-                Name = "菲特银行南海分行",
-                PublicKey = "RUNTMSAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6",
-                PrivateKey = "RUNTMiAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6bLAWC+sFREWvj1rfY97K49tosn9eg5CQ9Q3e1i59zgQ=",
-                SignatureToCertifyIssuer = "",
-                PaymentAccounts = new List<PaymentAccount>()
-            };
-            issuer2.SignatureToCertifyIssuer = CryptoHelper.Sign(s_Bank.PrivateKey, issuer2.PublicKey);
-            CertifiedIssuers.Add(issuer2);
+            //var issuer2 = new Issuer
+            //{
+            //    Id = 1942,
+            //    Name = "菲特银行南海分行",
+            //    PublicKey = "RUNTMSAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6",
+            //    PrivateKey = "RUNTMiAAAADn7HBQqfSnjcD2R3UFKyirGIAqk65+NPWMIlX3Ilp95HpZLWt9DqSYowSbCQ1wUienJ9wQ2GEoYKWOEwMF9jl6bLAWC+sFREWvj1rfY97K49tosn9eg5CQ9Q3e1i59zgQ=",
+            //    SignatureToCertifyIssuer = "",
+            //    PaymentAccounts = new List<PaymentAccount>()
+            //};
+            //issuer2.SignatureToCertifyIssuer = CryptoHelper.Sign(s_Bank.PrivateKey, issuer2.PublicKey);
+            //CertifiedIssuers.Add(issuer2);
 
-            s_Blocks = new List<HigherLevelBlock>();
-            s_Hashes = new List<Tuple<long, string>>();
-
-            s_Period = 0;
+            //s_Blocks = new List<HigherLevelBlock>();
+            //s_Hashes = new List<Tuple<long, string>>();
+            //s_LowerLevelBlockPool = new Queue<LowerLevelBlock>();
+            //s_Period = 0;
         }
 
         /// <summary>
@@ -67,7 +63,8 @@ namespace FiatCoinNetWeb.Controllers
         [Route("certifier/api/issuers")]
         public List<Issuer> GetCertifiedIssuers()
         {
-            return CertifiedIssuers;
+            return bankService.bank.CertifiedIssuers;
+            
         }
 
         /// <summary>
@@ -79,11 +76,10 @@ namespace FiatCoinNetWeb.Controllers
         [Route("certifier/api/issuers/{id}/key")]
         public HttpResponseMessage GetKey([FromUri]int id)
         {
-            var issuer = CertifiedIssuers.First(i => i.Id == id);
+            var issuer = bankService.bank.CertifiedIssuers.First(i => i.Id == id);
             if (issuer == null)
             {
                 var message = string.Format("Issuer with id = {0} not found", id);
-
                 return Request.CreateErrorResponse(HttpStatusCode.NotFound, message);
             }
             else
@@ -100,7 +96,7 @@ namespace FiatCoinNetWeb.Controllers
         [Route("certifier/api/blocks")]
         public List<HigherLevelBlock> GetBlocks()
         {
-            return s_Blocks;
+            return bankService.bank.s_Blocks;
         }
 
         /// <summary>
@@ -112,21 +108,21 @@ namespace FiatCoinNetWeb.Controllers
         [Route("certifier/api/blocks/{period}")]
         public HigherLevelBlock GetBlocks(long period)
         {
-            return s_Blocks.FirstOrDefault<HigherLevelBlock>(b => b.Period == period);
+            return bankService.bank.s_Blocks.FirstOrDefault<HigherLevelBlock>(b => b.Period == period);
         }
 
         [HttpGet]
         [Route("certifier/api/hashes")]
         public List<Tuple<long, string>> GetHashes()
         {
-            return s_Hashes;
+            return bankService.bank.s_Hashes;
         }
 
         [HttpGet]
         [Route("certifier/api/hashes/{period}")]
         public string GetHash(long period)
         {
-            return s_Hashes.FirstOrDefault<Tuple<long, string>>(t => t.Item1 == period).Item2;
+            return bankService.bank.s_Hashes.FirstOrDefault<Tuple<long, string>>(t => t.Item1 == period).Item2;
         }
 
         /// <summary>
@@ -137,40 +133,21 @@ namespace FiatCoinNetWeb.Controllers
         [Route("certifier/api/period")]
         public long GetPeriod()
         {
-            return s_Period;
+            return bankService.bank.s_Period;
         }
 
-        //TODO:modify the higherlevelblock procedure
+        //receive lowerlevelblock from Issuers
+        [HttpPost]
+        [Route("certifier/api/postLowerLevelBlock")]
+        public void ReceiveLowerLevelBlock(LowerLevelBlock block)
+        {
+            bankService.bank.s_LowerLevelBlockPool.Enqueue(block);
+            bankService.bank.prevBlockHash = block.Hash;
+
+            //TODO: write the received block into database
+        }
+        
         /*
-        [HttpPost]
-        [Route("certifier/api/CreateHigherLevelBlock")]
-        public void CreateHigherLevelBlock(LowerLevelBlock block)
-        {
-            HigherLevelBlock highLevelBlock = new HigherLevelBlock();
-            highLevelBlock.Hash = block.Hash;
-            highLevelBlock.Period = block.Period;
-            highLevelBlock.TransactionSet = block.TransactionSet;
-            highLevelBlock.Signature = block.Signature;
-            highLevelBlock.hashPrevBlock = block.hashPrevBlock;
-            s_Blocks.Add(highLevelBlock);
-        }
-        */
-
-        [HttpPost]
-        [Route("certifier/api/HashPrevBlock")]
-        public HttpResponseMessage postHashPrevBlock(LowerLevelBlock block)
-        {
-            s_hashPrevBlock = block.Hash;
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        [HttpGet]
-        [Route("certifier/api/HashPrevBlock")]
-        public string getHashPrevBlock()
-        {
-            return s_hashPrevBlock;
-        }
-
         [HttpPost]
         [Route("certifier/api/prevBlockHash")]
         public HttpResponseMessage postPrevBlockHash(string hash)
@@ -178,12 +155,13 @@ namespace FiatCoinNetWeb.Controllers
             s_prevBlockHash = hash;
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+        */
 
         [HttpGet]
         [Route("certifier/api/prevBlockHash")]
         public string getPrevBlockHash()
         {
-            return s_prevBlockHash;
+            return bankService.bank.prevBlockHash;
         }
 
 
